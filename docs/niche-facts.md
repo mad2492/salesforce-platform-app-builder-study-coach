@@ -3,7 +3,8 @@
 The details that actually separate answers. Written for skimming in short gaps, not for
 reading front to back. Each **Decoy** line is the wrong answer the question will dangle.
 
-Coverage so far: 3 of 40 course topics. See "Not yet covered" at the bottom.
+Coverage: 14 of roughly 31 course topics, chosen by what the practice exam said you actually
+missed rather than by working through the course in order. See "Not yet covered" at the bottom.
 
 ---
 
@@ -508,18 +509,79 @@ Copy; Performance and Unlimited do.**
 
 ---
 
+## Change sets
+
+*Diagnostic: this was the very first question missed on the practice exam.*
+
+**Change sets move metadata, never data.** A list of contact records cannot travel in a change
+set — that needs Data Loader. This is the most-tested fact here and almost certainly what the
+"which cannot be transferred" question was after.
+
+**Related orgs only.** They require a **deployment connection**, which exists between a production
+org and its sandboxes. Creating a sandbox establishes one automatically; the target org must
+separately allow inbound changes.
+
+**Outbound** is created in the source org; it arrives as **inbound** in the target.
+
+**The four hard limits:**
+
+| Limit | Consequence |
+| --- | --- |
+| **Cannot delete or rename** components | do it manually in the target — a renamed component arrives as a **brand new** one, leaving the original behind |
+| **Overwrites, never merges** | changes made directly in the target are lost |
+| **All or nothing** | one failure rolls the whole deployment back; no partial deploy |
+| **Cannot express deployment order** | split into two change sets when sequence matters |
+
+Not all metadata types are supported — unsupported ones must be configured manually in the target.
+
+**Two defaults that run opposite ways, so they get tested together:**
+
+- Deployed **list views are visible to all users**.
+- Deployed **custom tabs are hidden from all users**. Include the profiles to fix visibility.
+
+**Other considerations:**
+
+- **Permission sets** are components. **Profiles** are not — they ride along under *"Profile
+  Settings for Included Components."*
+- **Reports in private folders cannot be added.** Move to a shared folder first.
+- **Flows and processes deploy as inactive by default** — a classic "deployment succeeded but
+  nothing happens." Deploying active brings a test-coverage requirement, and the minimum-percentage
+  option exists **only in production**, since sandboxes always permit active versions.
+- An uploaded change set **cannot be edited** — status goes **Closed**. **Clone** it to make a
+  variant. It can be uploaded to several connected orgs.
+- **Validate** is a dry run in the target: success or failure, nothing committed.
+
+**Troubleshooting cues:**
+
+- *Insufficient Privileges* on Deployment Connections → the org likely has **no sandboxes provisioned**
+- Deployment fails → a **dependent component is missing** from the target
+- Change set vanished → it **expired**, was **deleted at source**, or the **source sandbox was
+  deleted or refreshed**
+- **Cross-version validation error** → source and target are on different Salesforce versions
+
+---
+
 ## Not yet covered
 
-Remaining 37 topics, in exam-weight order:
+Every cluster the practice exam flagged is now covered. What remains was not implicated by a
+question you actually missed.
 
-| Domain | Weight | Status |
-| --- | --- | --- |
-| Business Logic and Process Automation | 28% | 1 of 8 topics |
-| Salesforce Fundamentals | 23% | 2 of 11 topics |
-| Data Modeling and Management | 22% | 0 of 9 topics |
-| User Interface | 17% | 0 of 7 topics |
-| App Deployment | 10% | 0 of 5 topics |
+| Domain | Weight | Covered | Still open |
+| --- | --- | --- | --- |
+| Business Logic | 28% | 3 of 6 | formula fields · approval processes · avoiding automation errors |
+| Salesforce Fundamentals | 23% | 6 of 9 | reports · report types · dashboards |
+| Data Modeling | 22% | 3 of 7 | record types · field data type change · schema builder |
+| **User Interface** | 17% | **0 of 5** | all of it — but you scored **90%** here |
+| App Deployment | 10% | 3 of 4 | deployment plan |
 
-Highest value next: formula fields, validation rules, approval processes, and the
-"determine the tool" topics in Business Logic; then relationship types and field data type
-change considerations in Data Modeling.
+**Read that User Interface row carefully.** It is the largest untouched block and the second
+heaviest domain, and it is still the *right* thing to skip: at 90% accuracy it is worth only about
+1.7 points of recoverable score, less than any other domain. Skipping it is a decision, not an
+oversight.
+
+**If more time appears, in order:** approval processes and formula fields (Business Logic, 28%),
+then record types and field data type change considerations (Data Modeling, 22%). Both were
+adjacent to questions you missed without being the direct cause.
+
+**Better use of that time:** take Practice Exam 2 and re-target from the result. This digest was
+built from one 60-question sample; a second one is worth more than another topic.

@@ -1910,5 +1910,197 @@ export const questions: Question[] = [
     explanation:
       "The advanced lifecycle consolidates parallel work in an integration sandbox first, then promotes to a UAT sandbox where users test and train before anything reaches production. The four phases throughout are plan, build, test, deploy.",
   },
+  {
+    id: "deploy-change-set-metadata-only",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "Which of the following CANNOT be moved from one org to another using a change set?",
+    options: [
+      "Data records, such as a list of contacts",
+      "Custom fields",
+      "Validation rules",
+      "Page layouts",
+    ],
+    answers: [0],
+    explanation:
+      "Change sets carry metadata — configuration — and never data. Moving records requires a data tool such as Data Loader. This metadata-versus-data line is the most frequently tested fact about change sets.",
+  },
+  {
+    id: "deploy-change-set-no-delete-rename",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "A field must be renamed and an obsolete field deleted in production. Can a change set do this?",
+    options: [
+      "No — change sets cannot delete or rename components; both must be done manually in the target org",
+      "Yes, renames and deletes deploy like any other change",
+      "Only deletions are supported; renames are not",
+      "Only renames are supported; deletions are not",
+    ],
+    answers: [0],
+    explanation:
+      "Neither operation is supported. Worse, a renamed component arrives in the target org as a brand new component, leaving the original behind — which is how duplicate fields quietly appear after a deployment.",
+  },
+  {
+    id: "deploy-change-set-overwrite",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "An updated workflow rule is deployed to an org that already has that rule. What happens?",
+    options: [
+      "The existing metadata is overwritten, not merged",
+      "The two versions are merged, keeping changes from both",
+      "The deployment fails because the component already exists",
+      "A second copy of the rule is created",
+    ],
+    answers: [0],
+    explanation:
+      "Change set deployment overwrites the component in the target org. Any change made directly in the target that is not represented in the change set is lost.",
+  },
+  {
+    id: "deploy-change-set-all-or-none",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "One component in a large change set fails during deployment. What is the result?",
+    options: [
+      "Nothing is deployed — the entire transaction rolls back",
+      "The successful components deploy and the failed one is skipped",
+      "The deployment pauses until the error is resolved",
+      "Components deploy in order until the failure, then stop",
+    ],
+    answers: [0],
+    explanation:
+      "Change set deployment is all or nothing. Partial deployment is not possible, and an incomplete deployment rolls back entirely.",
+  },
+  {
+    id: "deploy-change-set-order",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "One component must be deployed before another. How is this handled with change sets?",
+    options: [
+      "Split the work into two change sets and deploy the prerequisite first",
+      "Order the components within a single change set",
+      "Use the deployment sequence field on the change set",
+      "Change sets resolve deployment order automatically",
+    ],
+    answers: [0],
+    explanation:
+      "A change set can hold dependent components but cannot express the order they deploy in. When sequencing genuinely matters, the only option is to split it.",
+  },
+  {
+    id: "deploy-change-set-connection",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "Which two statements about deployment connections are correct?",
+    options: [
+      "Change sets only work between related orgs with a deployment connection",
+      "Creating a sandbox from production establishes a deployment connection automatically",
+      "A deployment connection can be created between any two Salesforce orgs",
+      "Deployment connections are configured in the source org only",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Change sets are limited to related orgs — a production org and its sandboxes. That connection appears automatically when a sandbox is created, and the target org must separately allow inbound changes.",
+  },
+  {
+    id: "deploy-change-set-list-view-tab-defaults",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "After deploying a change set, which two default visibility behaviors apply?",
+    options: [
+      "Deployed list views are visible to all users",
+      "Deployed custom tabs are hidden from all users",
+      "Deployed list views are hidden from all users",
+      "Deployed custom tabs are visible to all users",
+    ],
+    answers: [0, 1],
+    explanation:
+      "The two defaults run opposite ways, which is exactly why they get tested together. To control tab visibility, include the relevant profiles in the change set.",
+  },
+  {
+    id: "deploy-change-set-profiles",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "How are permission sets and profiles handled in a change set?",
+    options: [
+      "Permission sets are added as components; profiles are added under 'Profile Settings for Included Components'",
+      "Both are added as ordinary components",
+      "Profiles are added as components; permission sets cannot be deployed",
+      "Neither can be deployed with change sets",
+    ],
+    answers: [0],
+    explanation:
+      "A permission set is a component in its own right. A profile is not — it rides along only as settings attached to the components already in the change set.",
+  },
+  {
+    id: "deploy-change-set-private-reports",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "A report cannot be added to an outbound change set. What is the most likely reason?",
+    options: [
+      "The report is stored in a private folder",
+      "Reports can never be deployed with change sets",
+      "The report contains a cross-object formula",
+      "The report has not been run recently",
+    ],
+    answers: [0],
+    explanation:
+      "Reports in private folders are not available to change sets. Moving the report into a shared folder makes it deployable.",
+  },
+  {
+    id: "deploy-change-set-flow-active",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "Which two statements about deploying flows and processes with change sets are correct?",
+    options: [
+      "They deploy as inactive by default",
+      "Deploying an active flow to production triggers test coverage requirements",
+      "They always deploy as active",
+      "Flows cannot be included in change sets at all",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Inactive is the default, so a deployed flow often needs activating afterward — a common cause of 'the deployment succeeded but nothing happens'. Active deployment brings a test coverage requirement, and the option to set a minimum percentage exists only in production, since sandboxes always allow active versions.",
+  },
+  {
+    id: "deploy-change-set-unavailable",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "An inbound change set that was visible yesterday has disappeared from the target org. Which two could explain this?",
+    options: [
+      "The change set expired or was deleted from the source org",
+      "The source sandbox was deleted or refreshed",
+      "The target org exceeded its data storage limit",
+      "The change set was validated but not deployed",
+    ],
+    answers: [0, 1],
+    explanation:
+      "A change set becomes unavailable if it expires, is deleted at the source, or the source sandbox is deleted or refreshed. Validating without deploying leaves it available — that is the whole point of validation.",
+  },
+  {
+    id: "deploy-change-set-validate",
+    domain: "App Deployment",
+    topic: "Change sets",
+    prompt:
+      "What does the Validate option on an inbound change set do?",
+    options: [
+      "Performs a test deployment that reports success or failure without committing changes",
+      "Deploys the change set and allows a rollback afterward",
+      "Checks only that all components exist in the source org",
+      "Locks the change set so it cannot be modified",
+    ],
+    answers: [0],
+    explanation:
+      "Validation is a dry run in the target org. It surfaces missing dependencies and version problems before anything is committed, which is why it belongs in every production deployment.",
+  },
 ];
 
