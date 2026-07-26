@@ -11,7 +11,7 @@
     "build": "vinext build",
     "build:pages": "vite build --config vite.pages.config.ts",
     "start": "vinext start",
-    "test": "vinext build && vite build --config vite.pages.config.ts && node --test tests/rendered-html.test.mjs",
+    "test": "vinext build && vite build --config vite.pages.config.ts && node --test tests/rendered-html.test.mjs tests/engine.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {

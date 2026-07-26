@@ -38,8 +38,10 @@ test("ships the complete weighted question bank", async () => {
   const source = await readFile(new URL("../app/questions.ts", import.meta.url), "utf8");
   const ids = [...source.matchAll(/\n\s+id: "([^"]+)",/g)].map((match) => match[1]);
 
-  assert.equal(ids.length, 25);
-  assert.equal(new Set(ids).size, 25);
+  // Deliberately a floor rather than an exact count: the bank grows as topics are
+  // mined, and an exact assertion fails on every addition without catching anything.
+  assert.ok(ids.length >= 100, `expected at least 100 questions, found ${ids.length}`);
+  assert.equal(new Set(ids).size, ids.length, "question ids must be unique");
   assert.match(source, /"Salesforce Fundamentals": 23/);
   assert.match(source, /"Data Modeling and Management": 22/);
   assert.match(source, /"Business Logic and Process Automation": 28/);
