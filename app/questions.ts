@@ -1014,5 +1014,117 @@ export const questions: Question[] = [
     explanation:
       "Flow Builder can post to a user, a group, or the triggering record's own feed. Users and groups are mentioned by referencing their ID in the message.",
   },
+  {
+    id: "data-lead-conversion-targets",
+    domain: "Data Modeling and Management",
+    topic: "Leads",
+    prompt:
+      "A lead is converted. Which records result?",
+    options: [
+      "An account and a contact, plus an opportunity only if one is chosen",
+      "An account, a contact, and an opportunity, always",
+      "A contact and an opportunity only",
+      "An account only, with the contact created separately afterward",
+    ],
+    answers: [0],
+    explanation:
+      "Conversion always produces an account and a contact, but the opportunity is optional — the single most-tested fact about leads. Existing accounts and contacts can be selected instead of creating new ones.",
+  },
+  {
+    id: "data-lead-web-to-lead",
+    domain: "Data Modeling and Management",
+    topic: "Leads",
+    prompt:
+      "Leads must be captured from a form on the company's public website. What should be used?",
+    options: [
+      "Web-to-Lead, which generates HTML to embed on the site",
+      "A lead assignment rule",
+      "An auto-response rule",
+      "A lead queue",
+    ],
+    answers: [0],
+    explanation:
+      "Web-to-Lead generates the HTML that creates lead records from a website form. Assignment rules, auto-response rules, and queues all act on leads after they exist — they do not capture them.",
+  },
+  {
+    id: "data-lead-auto-response",
+    domain: "Data Modeling and Management",
+    topic: "Leads",
+    prompt:
+      "Prospects submitting the website form should immediately receive an email whose content depends on the values they entered. What should be configured?",
+    options: [
+      "An auto-response rule",
+      "An assignment rule",
+      "A validation rule",
+      "A lead queue",
+    ],
+    answers: [0],
+    explanation:
+      "Auto-response rules send automatic email replies to Web-to-Lead submissions, choosing the response based on the record's attributes. Assignment rules decide ownership, not correspondence.",
+  },
+  {
+    id: "data-lead-queue-vs-assignment",
+    domain: "Data Modeling and Management",
+    topic: "Leads",
+    prompt:
+      "Which two statements about lead queues and assignment rules are correct?",
+    options: [
+      "A queue is a holding location for leads not yet assigned to an owner",
+      "Assignment rules apply criteria to automatically sort, queue, or act on leads",
+      "A queue automatically converts leads once they meet criteria",
+      "Assignment rules can only assign leads to individual users, never to a queue",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Queues hold unassigned leads so teams can share and distribute workload; assignment rules are the criteria engine that routes leads, and a queue is a valid assignment target. Conversion is always a separate step.",
+  },
+  {
+    id: "data-lead-process-record-type",
+    domain: "Data Modeling and Management",
+    topic: "Leads",
+    prompt:
+      "Two sales teams need different sets of lead status values. What supports this?",
+    options: [
+      "Create lead processes with the required status values, then assign record types and page layouts to them",
+      "Create a validation rule restricting status per team",
+      "Create separate lead queues for each team",
+      "Create a formula field that overrides the status",
+    ],
+    answers: [0],
+    explanation:
+      "A lead process defines which status values apply. Record types and page layouts are then assigned to the process, which is how different teams get different picklist values on the same object.",
+  },
+  {
+    id: "data-campaign-member-sources",
+    domain: "Data Modeling and Management",
+    topic: "Campaigns",
+    prompt:
+      "Which three record types can be added as campaign members?",
+    options: [
+      "Contacts",
+      "Leads",
+      "Person accounts",
+      "Opportunities",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "Contacts, leads, and person accounts can all be campaign members. Person accounts are the one people forget. Opportunities are related to campaigns but are never campaign members.",
+  },
+  {
+    id: "data-campaign-hierarchy",
+    domain: "Data Modeling and Management",
+    topic: "Campaigns",
+    prompt:
+      "Campaigns must be grouped under a larger marketing initiative so results can be rolled up. What makes this possible?",
+    options: [
+      "A campaign hierarchy, built on a lookup relationship between campaigns",
+      "A master-detail relationship between campaigns",
+      "A junction object linking campaigns",
+      "A record type per initiative",
+    ],
+    answers: [0],
+    explanation:
+      "Campaign hierarchy is a self-lookup on the Campaign object. It is a good counter-example to the assumption that any roll-up-style grouping must be master-detail.",
+  },
 ];
 

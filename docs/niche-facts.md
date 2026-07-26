@@ -240,6 +240,41 @@ and customizable page layouts, like objects. Flow can post to a **user**, a **gr
 
 ---
 
+## Leads and campaigns
+
+*Diagnostic: flagged as a true blind spot rather than rust — no org experience to fall back on.*
+
+**The one fact everything else hangs off: conversion creates an account and a contact
+*always*, and an opportunity *optionally*.** Existing accounts and contacts can be selected
+instead of new ones being created. Any answer that makes the opportunity mandatory is wrong.
+
+**Four features that get confused with each other — separate them by *when* they act:**
+
+| Feature | Acts |
+| --- | --- |
+| **Web-to-Lead** | *creates* the lead, from HTML embedded on a website |
+| **Auto-response rules** | *replies* by email to a Web-to-Lead submission, chosen by record attributes |
+| **Assignment rules** | *routes* — applies criteria to sort, queue, or act on leads |
+| **Queues** | *holds* leads with no owner, so a team can share and distribute them |
+
+Only Web-to-Lead brings a lead into existence. The other three act on leads that already exist,
+and a queue is a valid assignment-rule target.
+
+**Lead process** defines which status values apply. Record types and page layouts are assigned
+to the process — that's how two teams get different status picklists on one object.
+
+Also: **Path** (Lightning Experience) tracks lead lifecycle. Social profiles and LinkedIn can be
+linked to leads.
+
+**Campaigns:**
+
+- **Campaign members can be contacts, leads, or person accounts.** Person accounts are the
+  forgotten third. Opportunities are *never* campaign members.
+- **Campaign hierarchy is a lookup relationship** between campaigns — a self-lookup, not
+  master-detail. Useful counter-example to "grouping implies master-detail."
+
+---
+
 ## Not yet covered
 
 Remaining 37 topics, in exam-weight order:
