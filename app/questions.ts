@@ -1542,5 +1542,213 @@ export const questions: Question[] = [
     explanation:
       "Every user has exactly one profile, which sets the baseline. Permission sets are optional and stack on top, which is why the recommended pattern is a minimal profile plus permission sets.",
   },
+  {
+    id: "auto-validation-true-blocks",
+    domain: "Business Logic and Process Automation",
+    topic: "Validation rules",
+    prompt:
+      "When does a validation rule prevent a record from being saved?",
+    options: [
+      "When the formula evaluates to TRUE",
+      "When the formula evaluates to FALSE",
+      "When the formula returns null",
+      "Whenever the referenced field is blank",
+    ],
+    answers: [0],
+    explanation:
+      "The formula describes the error condition. TRUE means the rule fires and the save is blocked. Writing the formula the wrong way round is one of the most common practical mistakes and a reliable exam trap.",
+  },
+  {
+    id: "auto-validation-order",
+    domain: "Business Logic and Process Automation",
+    topic: "Validation rules",
+    prompt:
+      "Relative to other automation, when are custom validation rules enforced?",
+    options: [
+      "Before workflow rules and processes run",
+      "After all workflow rules and processes complete",
+      "Only after an approval process finishes",
+      "In parallel with record-triggered flows",
+    ],
+    answers: [0],
+    explanation:
+      "Validation runs before the other processing rules. That ordering is why a workflow field update can later leave a record holding values the validation rule would have rejected.",
+  },
+  {
+    id: "auto-validation-lead-conversion",
+    domain: "Business Logic and Process Automation",
+    topic: "Validation rules",
+    prompt:
+      "Are validation rules enforced during lead conversion?",
+    options: [
+      "Only if validation and triggers for lead conversion are enabled in the org",
+      "Always, without any additional configuration",
+      "Never — conversion bypasses validation entirely",
+      "Only for custom fields",
+    ],
+    answers: [0],
+    explanation:
+      "Lead conversion enforces validation only when that org-level setting is switched on. This is exactly the kind of conditional behavior scenario questions are built around.",
+  },
+  {
+    id: "auto-validation-entry-points",
+    domain: "Business Logic and Process Automation",
+    topic: "Validation rules",
+    prompt:
+      "Which two statements about when validation rules apply are correct?",
+    options: [
+      "They run for records created through Web-to-Lead and Web-to-Case",
+      "They apply even when the referenced field is not on the page layout or in the API call",
+      "They apply to records created with Quick Create",
+      "They are skipped during data imports",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Web-generated records are validated, and the rule does not care whether the field is visible or supplied. The two exceptions worth memorizing are Quick Create, where rules do not apply, and lead conversion, which depends on an org setting. Imports are validated.",
+  },
+  {
+    id: "auto-validation-workflow-invalidates",
+    domain: "Business Logic and Process Automation",
+    topic: "Validation rules",
+    prompt:
+      "How can a record end up holding values that violate an active validation rule?",
+    options: [
+      "A workflow field update or a process scheduled action modified it, and those updates do not trigger validation rules",
+      "The validation rule was deactivated and reactivated",
+      "The record was owned by a system administrator",
+      "The record was created before the field existed",
+    ],
+    answers: [0],
+    explanation:
+      "Updates driven by workflow rules and process scheduled actions do not re-run validation, so they can quietly invalidate previously valid records. Hidden fields, field-level security, and assignment rules can likewise cause records to fail validation unexpectedly.",
+  },
+  {
+    id: "data-import-wizard-limit",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "10,000 account records must be imported from a CSV. Which two tools can do this?",
+    options: [
+      "Data Import Wizard",
+      "Data Loader",
+      "Schema Builder",
+      "Report Builder",
+    ],
+    answers: [0, 1],
+    explanation:
+      "The Data Import Wizard handles fewer than 50,000 records and supports Accounts, so it fits. Data Loader covers roughly 50,000 up to 150 million and works here too. Schema Builder and Report Builder do not import data at all.",
+  },
+  {
+    id: "data-loader-vs-wizard-volume",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "Which statement correctly describes the volume boundary between the two native import tools?",
+    options: [
+      "Data Import Wizard handles fewer than 50,000 records; Data Loader covers roughly 50,000 up to 150 million",
+      "Data Import Wizard handles up to 5 million records",
+      "Data Loader is capped at 50,000 records",
+      "Both tools have identical record limits",
+    ],
+    answers: [0],
+    explanation:
+      "50,000 is the dividing line. Anything above it, or any object the wizard does not support, points to Data Loader.",
+  },
+  {
+    id: "data-import-wizard-objects",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "Which objects does the Data Import Wizard support?",
+    options: [
+      "Accounts, Contacts, Leads, Solutions, Campaign Members, Person Accounts, and custom objects",
+      "All standard and custom objects",
+      "Custom objects only",
+      "Opportunities, Cases, and Accounts",
+    ],
+    answers: [0],
+    explanation:
+      "The wizard's object list is fixed and notably excludes Opportunities and Cases. A scenario naming an unsupported object is steering you to Data Loader regardless of volume.",
+  },
+  {
+    id: "data-loader-operations",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "Which two operations are available in Data Loader but NOT in the Data Import Wizard?",
+    options: [
+      "Delete",
+      "Export",
+      "Insert",
+      "Update",
+    ],
+    answers: [0, 1],
+    explanation:
+      "The wizard does insert, update, and upsert only. Delete, hard delete, export, and Export All — which includes archived records and the Recycle Bin — belong to Data Loader.",
+  },
+  {
+    id: "data-import-scheduling",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "A nightly automated export must run on a schedule. What supports this?",
+    options: [
+      "The Data Loader command line interface",
+      "The Data Import Wizard",
+      "The Data Loader desktop interface only",
+      "Schema Builder",
+    ],
+    answers: [0],
+    explanation:
+      "Scheduling is a command line capability of Data Loader. The Data Import Wizard cannot be scheduled at all.",
+  },
+  {
+    id: "data-import-parent-order",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "Accounts and their contacts are being loaded. Which two steps preserve the relationships?",
+    options: [
+      "Load the parent Account records before the child Contact records",
+      "Include a column of parent record IDs in the child import file",
+      "Load contacts first so accounts can attach to them",
+      "Disable validation rules during the import",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Parents must exist before children can reference them, and the child file needs the parent IDs to make the link. Imported data still respects required fields and validation rules.",
+  },
+  {
+    id: "data-loader-defaults",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "A Data Loader import file leaves the owner and currency columns blank. What happens?",
+    options: [
+      "The owner defaults to the user performing the import, and the currency defaults to the corporate currency",
+      "The import fails because both fields are required",
+      "The owner defaults to the system administrator, and currency is left blank",
+      "The records import with no owner assigned",
+    ],
+    answers: [0],
+    explanation:
+      "Both fields fall back to sensible defaults rather than failing. Relatedly, a value for an unrestricted picklist imports successfully but is not added to the active values list.",
+  },
+  {
+    id: "data-import-workflow-suppression",
+    domain: "Data Modeling and Management",
+    topic: "Data import and export",
+    prompt:
+      "Which statement about suppressing automation during an import is correct?",
+    options: [
+      "The Data Import Wizard offers an option to prevent workflow rules and processes from firing",
+      "Data Loader has a built-in setting to disable all automation",
+      "Neither tool can prevent automation from running",
+      "Automation never runs during any import",
+    ],
+    answers: [0],
+    explanation:
+      "The wizard exposes the choice directly. With Data Loader the automation has to be deactivated manually beforehand, which is the practical difference between the two.",
+  },
 ];
 
