@@ -165,6 +165,81 @@ permissions the org doesn't actually have.
 
 ---
 
+## Mobile actions and layouts
+
+*Diagnostic: two Fundamentals misses here.*
+
+**Global vs. object-specific — the distinction the exam actually tests:**
+
+| | Global | Object-specific |
+| --- | --- | --- |
+| Record relationship | **none** automatic | auto-associated with the related record |
+| Configured in | Setup → Global Actions | the object's **page layout editor** |
+| Found on | (+) in the header, home, Chatter tab and groups, object pages, custom Lightning app pages | that object's record detail page |
+| Extra action types | custom canvas, **Aura** components | **Update a Record**, **flow**, Aura **and LWC** |
+
+**The fastest tiebreaker: only object-specific actions can *update* a record.** A global action
+has no record context, so there's nothing for it to update. Same logic for flows and LWCs.
+
+**Layout inheritance — the rule behind "why don't my actions show up":**
+
+- An object page layout that hasn't been customized **inherits the global publisher layout**.
+- Adding your own object-specific actions requires ticking **"Override global publisher layout."**
+- Actions must sit in the **Publisher Actions** section of the page layout to render.
+- Global publisher layouts are assigned **by profile**. Decoy: by role.
+
+**Action flavors worth telling apart:**
+
+- **Standard publisher actions** — Post, File, Link. Arrive with Chatter; need **feed tracking** per object.
+- **Mobile smart actions** — preconfigured bundle, **one element** in the layout editor,
+  **mobile app only**.
+- **Productivity actions** — predefined by Salesforce, attached to a limited set of objects.
+- **Dynamic actions** — control action *visibility* conditionally.
+
+Navigation menu lives in Setup → Salesforce Navigation. Users can reorder Lightning app items
+themselves from the phone. **Smart Search Items** puts objects into the Recent section.
+
+---
+
+## Chatter
+
+*Diagnostic: two Fundamentals misses here.*
+
+**The numbers — pure recall, and they show up:**
+
+| Fact | Value |
+| --- | --- |
+| Feed tracking fields per object | **20** |
+| Max Chatter file size | **2 GB** |
+| Chatter Free per standard license | **5,000** |
+| Chatter External per standard license | **500** |
+| Custom objects a Chatter Only user may modify | **10** |
+
+**Group types are two independent questions.** Privacy is public / private / unlisted.
+**Broadcast is a separate flag** that any of the three can carry — owner and managers post,
+members may only respond. A question about *who can post* is not a question about privacy.
+
+**Private group access:** joining needs the owner's permission; the feed is visible to members,
+the system administrator, and users with **View All Data**.
+
+**Licenses:** Chatter Free · Chatter External · Chatter Only (Plus). Lightning Platform also
+includes Chatter.
+
+- **Chatter Free** — feeds, people, groups, files. **No Salesforce objects or data, and no tabs.**
+- **Chatter External** — customers *outside the company email domain*, limited to groups they're
+  invited to.
+- **Conversion runs one way:** Chatter Free can be upgraded any time; a standard or Chatter Only
+  license **cannot** be converted down to Chatter Free.
+
+**Security:** Chatter has no sharing model of its own. Post visibility follows **record or group
+access**. Decoy: an organization-wide default "for Chatter."
+
+Chatter is enabled by default; restrict it with **profile-based rollout**. Groups have list views
+and customizable page layouts, like objects. Flow can post to a **user**, a **group**, or the
+**triggering record's** feed, mentioning people by ID.
+
+---
+
 ## Not yet covered
 
 Remaining 37 topics, in exam-weight order:

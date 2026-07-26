@@ -822,5 +822,197 @@ export const questions: Question[] = [
     explanation:
       "Restricted Profile Cloning is enabled in User Management Settings. It prevents a clone from carrying permissions the org itself does not have available.",
   },
+  {
+    id: "fund-action-update-record",
+    domain: "Salesforce Fundamentals",
+    topic: "Mobile actions",
+    prompt:
+      "An action must let users update fields on the record they are currently viewing. Which type of action supports this?",
+    options: [
+      "An object-specific action",
+      "A global action",
+      "A standard publisher action",
+      "A productivity action",
+    ],
+    answers: [0],
+    explanation:
+      "Update a Record is only available as an object-specific action, because a global action has no automatic relationship to any record and therefore nothing to update. This is the cleanest way to tell the two apart.",
+  },
+  {
+    id: "fund-global-vs-object-action",
+    domain: "Salesforce Fundamentals",
+    topic: "Mobile actions",
+    prompt:
+      "Which two statements correctly distinguish global actions from object-specific actions?",
+    options: [
+      "A global action creates a record with no automatic relationship to any other record",
+      "An object-specific action creates records automatically associated with the related record",
+      "A global action is configured on the object's page layout editor",
+      "An object-specific action can only be used in Salesforce Classic",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Global actions are defined in Setup > Global Actions and produce standalone records. Object-specific actions live in the object's page layout and associate what they create with the parent record.",
+  },
+  {
+    id: "fund-action-types-flow-lwc",
+    domain: "Salesforce Fundamentals",
+    topic: "Mobile actions",
+    prompt:
+      "A quick action needs to launch a flow. Where can it be configured?",
+    options: [
+      "As an object-specific action",
+      "As a global action",
+      "As a standard publisher action",
+      "As a mobile smart action",
+    ],
+    answers: [0],
+    explanation:
+      "Object-specific actions support the widest set of types, including flow, Update a Record, and Lightning web components. Global action types cover Create a Record, Send Email, Log a Call, custom Visualforce, custom canvas, and Aura components.",
+  },
+  {
+    id: "fund-global-publisher-layout",
+    domain: "Salesforce Fundamentals",
+    topic: "Mobile actions",
+    prompt:
+      "An object's page layout has not been customized with actions. Which two statements are true?",
+    options: [
+      "The record page inherits its actions from the global publisher layout",
+      "Adding object-specific actions requires ticking 'Override global publisher layout'",
+      "The record page displays no actions at all until one is added",
+      "Global publisher layouts are assigned per role",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Uncustomized object pages inherit the global publisher layout. To replace that inheritance with your own actions, the override option must be selected. Global publisher layouts are assigned by profile, not by role.",
+  },
+  {
+    id: "fund-mobile-smart-actions",
+    domain: "Salesforce Fundamentals",
+    topic: "Mobile actions",
+    prompt:
+      "Which statement describes mobile smart actions?",
+    options: [
+      "They are preconfigured, appear as a single element in the page layout editor, and display only in the Salesforce mobile app",
+      "They are custom actions that must be built individually per object",
+      "They replace the global publisher layout entirely",
+      "They are available only in Salesforce Classic on the desktop",
+    ],
+    answers: [0],
+    explanation:
+      "Mobile smart actions bundle a preconfigured set — for Account, things like New Task, New Contact, New Opportunity — into one element in the layout editor, and they render only in the mobile app.",
+  },
+  {
+    id: "fund-chatter-feed-tracking-limit",
+    domain: "Salesforce Fundamentals",
+    topic: "Chatter",
+    prompt:
+      "How many fields per object can have feed tracking enabled?",
+    options: [
+      "Up to 20",
+      "Up to 10",
+      "Up to 25",
+      "Unlimited",
+    ],
+    answers: [0],
+    explanation:
+      "Feed tracking can be enabled for standard and custom objects, covering up to 20 fields on each. Standard publisher actions such as Post, File, and Link also depend on feed tracking being enabled per object.",
+  },
+  {
+    id: "fund-chatter-broadcast-group",
+    domain: "Salesforce Fundamentals",
+    topic: "Chatter",
+    prompt:
+      "Only a group's owner and managers should be able to create posts, while members can still reply. What should be configured?",
+    options: [
+      "Mark the group as a broadcast group",
+      "Make the group private",
+      "Make the group unlisted",
+      "Remove post permissions from each member individually",
+    ],
+    answers: [0],
+    explanation:
+      "Broadcast is a setting layered on top of the group type — public, private, or unlisted groups can all be marked as broadcast. It restricts posting to the owner and managers while leaving members able to respond. Privacy level is a separate question from who may post.",
+  },
+  {
+    id: "fund-chatter-private-group-access",
+    domain: "Salesforce Fundamentals",
+    topic: "Chatter",
+    prompt:
+      "Who can see and add posts to the feed of a private Chatter group?",
+    options: [
+      "The system administrator, group members, and users with View All Data",
+      "Any user in the org who searches for the group",
+      "Only the group owner",
+      "All users holding the same profile as the group owner",
+    ],
+    answers: [0],
+    explanation:
+      "Joining a private group requires the owner's permission, and feed visibility is limited to members, the system administrator, and users with View All Data.",
+  },
+  {
+    id: "fund-chatter-license-limits",
+    domain: "Salesforce Fundamentals",
+    topic: "Chatter",
+    prompt:
+      "Which two statements about Chatter-specific licenses are correct?",
+    options: [
+      "Chatter Free users can access Chatter items but no Salesforce objects or data",
+      "Chatter External is for collaborating with users outside the company's email domain, in invited groups only",
+      "Chatter Free users can view tabs like other Salesforce users",
+      "Chatter External users have full read access to Accounts and Contacts",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Chatter Free grants feeds, people, groups, and files but no object data, and those users see no tabs. Chatter External is scoped to customers outside the email domain and only within groups they are invited to.",
+  },
+  {
+    id: "fund-chatter-license-conversion",
+    domain: "Salesforce Fundamentals",
+    topic: "Chatter",
+    prompt:
+      "Which statement about converting Chatter licenses is correct?",
+    options: [
+      "A Chatter Free license can be upgraded to standard Salesforce or Chatter Only, but the reverse conversion is not allowed",
+      "Any license can be converted to any other license at will",
+      "A standard Salesforce license can be downgraded to Chatter Free to save cost",
+      "Chatter Only licenses cannot be changed once assigned",
+    ],
+    answers: [0],
+    explanation:
+      "Upgrades from Chatter Free are permitted at any time. Administrators cannot convert a standard Salesforce or Chatter Only license down to Chatter Free — the restriction runs one way.",
+  },
+  {
+    id: "fund-chatter-post-security",
+    domain: "Salesforce Fundamentals",
+    topic: "Chatter",
+    prompt:
+      "What determines whether a user can see a particular Chatter post?",
+    options: [
+      "Access to the underlying record or to the group where it was posted",
+      "The poster's profile",
+      "The organization-wide default for the Chatter object",
+      "Whether the user follows the person who posted",
+    ],
+    answers: [0],
+    explanation:
+      "Chatter does not introduce a separate sharing model. Post visibility follows the access a user already has to the record or the group.",
+  },
+  {
+    id: "fund-chatter-automated-posts",
+    domain: "Salesforce Fundamentals",
+    topic: "Chatter",
+    prompt:
+      "A record-triggered flow must post to Chatter automatically. Which three destinations are supported?",
+    options: [
+      "A specific Chatter user's feed",
+      "A specific Chatter group's feed",
+      "The feed of the record that triggered the flow",
+      "The personal email digest of every user in the org",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "Flow Builder can post to a user, a group, or the triggering record's own feed. Users and groups are mentioned by referencing their ID in the message.",
+  },
 ];
 
