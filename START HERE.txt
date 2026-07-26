@@ -1,6 +1,10 @@
 BUILDER BENCH
 Salesforce Platform App Builder Study Coach
 
+STUDY ONLINE
+
+https://mad2492.github.io/salesforce-platform-app-builder-study-coach/
+
 TO OPEN THE APP LATER
 
 1. Double-click "Start Builder Bench.cmd" in this folder.
@@ -12,4 +16,3 @@ YOUR PROGRESS
 Your answers and scores stay in your browser on this computer. They are not
 uploaded or shared. Use "Copy study brief" in the app when you want to bring
 your results back to Codex for a readiness assessment and new questions.
-
