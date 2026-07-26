@@ -145,6 +145,38 @@ restricts.** Everything layered on top can *only* grant more.
 - Criteria-based sharing rules have an option to include records owned by **high-volume site
   or system users**.
 
+**Correction to the rule above: two mechanisms *do* take access away.**
+
+- **Restriction rules** genuinely revoke access — they limit a group of users to a subset of
+  records using **user criteria + record criteria**. Available **only** on **custom objects,
+  contracts, tasks, events, and external objects**. A scenario naming Account or Opportunity is
+  checking whether you know that.
+- **Scoping rules** only filter the **default view** (by division, ownership, or record criteria).
+  **Records stay accessible through sharing settings.** Similar name, opposite effect — the two
+  are made for each other as distractors.
+
+So the accurate version: *sharing rules* only open up; restriction rules restrict; scoping rules
+change what you see first without changing what you can reach.
+
+**Same correction on the permission-set side.** A plain permission set is purely additive and
+cannot deny anything — but a **muting permission set**, inside a permission set group, disables
+selected permissions for assigned users. That's the one way a permission set takes something away.
+
+**View All Records / Modify All Records** override record-level sharing entirely for that object.
+
+**Profiles vs. permission sets, by count:** exactly **one** profile per user; **zero to many**
+permission sets.
+
+**Public groups vs. queues:** groups are a **sharing target**; queues **hold ownership** so a team
+can work a shared pool. Both can contain users, roles, roles and subordinates, territories, and
+other public groups. Queues work on **Tasks, Cases, Contact Requests, Service Contracts, Leads,
+Orders, Knowledge Article Versions, and custom objects** — *not* Accounts, Contacts, or
+Opportunities.
+
+**Manager groups** derive from the **Manager field on the User record**, not the role hierarchy.
+Enable in Sharing Settings; then Manager Groups and Manager Subordinates Groups appear as sharing
+rule targets.
+
 **Campaign Member has two special OWDs — know the pair:**
 
 | Setting | Access derives from |

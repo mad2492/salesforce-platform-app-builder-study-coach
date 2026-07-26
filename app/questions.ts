@@ -1398,5 +1398,149 @@ export const questions: Question[] = [
     explanation:
       "Master-detail cascades deletion from master to detail. A lookup would leave the salary plans behind. Any requirement phrased as 'deleted when the parent is deleted' points at master-detail.",
   },
+  {
+    id: "fund-restriction-rules-purpose",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "A group of users must be prevented from accessing a subset of records they would otherwise be able to see. What should be used?",
+    options: [
+      "A restriction rule",
+      "A sharing rule",
+      "A scoping rule",
+      "A tighter organization-wide default",
+    ],
+    answers: [0],
+    explanation:
+      "Restriction rules are the one sharing mechanism that actually takes access away, filtering by user criteria and record criteria. Sharing rules only grant, and scoping rules change the default view without changing access.",
+  },
+  {
+    id: "fund-restriction-rules-objects",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Restriction rules are available on which objects?",
+    options: [
+      "Custom objects, contracts, tasks, events, and external objects",
+      "All standard and custom objects",
+      "Accounts, contacts, and opportunities only",
+      "Custom objects only",
+    ],
+    answers: [0],
+    explanation:
+      "The supported list is deliberately narrow — custom objects, contracts, tasks, events, and external objects. A question naming Account or Opportunity is testing whether you know restriction rules do not apply there.",
+  },
+  {
+    id: "fund-scoping-vs-restriction",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "What is the key difference between a scoping rule and a restriction rule?",
+    options: [
+      "A scoping rule filters which records users see by default but does not change what they can access",
+      "A scoping rule permanently removes access while a restriction rule only hides records",
+      "Scoping rules apply only to custom objects while restriction rules apply to all objects",
+      "They are two names for the same feature",
+    ],
+    answers: [0],
+    explanation:
+      "Scoping rules narrow the default view by division, ownership, or record criteria — records remain accessible through sharing settings. Restriction rules genuinely revoke access. Same-sounding names, opposite effects.",
+  },
+  {
+    id: "fund-muting-permission-set",
+    domain: "Salesforce Fundamentals",
+    topic: "Object and field access",
+    prompt:
+      "Users assigned a permission set group must be prevented from deleting records, even though one of the included permission sets grants Delete. What should be configured?",
+    options: [
+      "A muting permission set within the permission set group",
+      "A second permission set that denies Delete",
+      "A restriction rule on the object",
+      "A validation rule blocking deletion",
+    ],
+    answers: [0],
+    explanation:
+      "An ordinary permission set is purely additive and cannot deny anything. A muting permission set is the exception: inside a permission set group it disables selected permissions for the assigned users.",
+  },
+  {
+    id: "fund-view-all-modify-all",
+    domain: "Salesforce Fundamentals",
+    topic: "Object and field access",
+    prompt:
+      "What is the effect of granting View All Records or Modify All Records on an object?",
+    options: [
+      "It grants access to all records of that object, overriding record-level sharing settings",
+      "It grants access only to records the user already owns",
+      "It applies only when the organization-wide default is Public Read Only",
+      "It affects field-level security but not record access",
+    ],
+    answers: [0],
+    explanation:
+      "These object permissions bypass the sharing model entirely for that object. That makes them a common right answer when a scenario needs broad access without restructuring sharing — and a common wrong answer when the requirement was narrow.",
+  },
+  {
+    id: "fund-public-group-vs-queue",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Which two statements distinguish public groups from queues?",
+    options: [
+      "Public groups are used to share records",
+      "Queues assign record ownership to more than one user",
+      "Queues are used to share records without changing ownership",
+      "Public groups can own records directly",
+    ],
+    answers: [0, 1],
+    explanation:
+      "A public group is a sharing target; a queue is an ownership holder that lets a team take records from a shared pool. Both can contain users, roles, roles and subordinates, territories, and other public groups.",
+  },
+  {
+    id: "fund-queue-supported-objects",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Queues are supported on which of these objects?",
+    options: [
+      "Cases, Leads, Tasks, Orders, and custom objects",
+      "Accounts, Contacts, and Opportunities",
+      "Custom objects only",
+      "All standard objects",
+    ],
+    answers: [0],
+    explanation:
+      "The supported set includes Tasks, Cases, Contact Requests, Service Contracts, Leads, Orders, Knowledge Article Versions, and custom objects. Accounts, Contacts, and Opportunities are not queue-enabled — a reliable distractor.",
+  },
+  {
+    id: "fund-manager-groups",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Records must be shared up a user's management chain based on the Manager field. Which two statements are correct?",
+    options: [
+      "Manager Groups must first be enabled in Sharing Settings",
+      "Once enabled, Manager Groups and Manager Subordinates Groups appear in the 'Share with' options of a sharing rule",
+      "Manager groups are based on the role hierarchy rather than the Manager field",
+      "Manager groups replace the need for organization-wide defaults",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Manager groups derive from the Manager field on the User record, not the role hierarchy — that distinction is the point of the feature. They are switched on in Sharing Settings and then become available as sharing rule targets.",
+  },
+  {
+    id: "fund-profile-vs-permset-count",
+    domain: "Salesforce Fundamentals",
+    topic: "Object and field access",
+    prompt:
+      "How many profiles and permission sets can a user have?",
+    options: [
+      "Exactly one profile, and zero to many permission sets",
+      "One profile and at most one permission set",
+      "Zero to many profiles and zero to many permission sets",
+      "At least one of each",
+    ],
+    answers: [0],
+    explanation:
+      "Every user has exactly one profile, which sets the baseline. Permission sets are optional and stack on top, which is why the recommended pattern is a minimal profile plus permission sets.",
+  },
 ];
 
