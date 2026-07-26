@@ -401,6 +401,67 @@ added to custom report types.
 
 ---
 
+## Validation rules
+
+*Diagnostic: one Business Logic miss.*
+
+**The rule fires when the formula is TRUE.** The formula describes the *error condition*, not the
+valid state. Getting this backwards is the classic mistake.
+
+**Validation runs before workflow rules and processes.** That ordering explains the gotcha below.
+
+**When they apply — memorize the exceptions, not the rule:**
+
+| Situation | Validated? |
+| --- | --- |
+| Normal create and edit | yes |
+| Data import | yes |
+| Web-to-Lead / Web-to-Case | **yes** |
+| Field not on the page layout, or absent from the API call | **yes — still applies** |
+| **Quick Create** | **no** |
+| **Lead conversion** | **only if enabled in the org** |
+
+**The invalid-data gotcha:** workflow field updates and process scheduled actions **do not
+trigger validation rules**, so they can leave a previously valid record holding values the rule
+would reject. Field-level security, hidden fields, and assignment rules can likewise cause
+records to fail validation in ways that look mysterious.
+
+Use cases worth recognizing: value ranges, **REGEX** for format enforcement, cross-object
+validation, field dependency, making a standard field effectively required.
+
+---
+
+## Data import and export
+
+*Diagnostic: two Data Modeling misses.*
+
+**50,000 records is the dividing line.**
+
+| | Data Import Wizard | Data Loader |
+| --- | --- | --- |
+| Volume | **under 50,000** | ~50,000 up to **150 million** |
+| Objects | Accounts, Contacts, Leads, Solutions, Campaign Members, Person Accounts, custom | **all** standard and custom |
+| Operations | insert, update, upsert | insert, update, upsert, **delete, hard delete, export, Export All** |
+| Suppress workflow/processes | **yes, built-in option** | no — deactivate manually first |
+| Prevent duplicates | yes, richer matching | ID / External ID matching only |
+| Schedule | **no** | **yes, via the command line** |
+| Install | native, in Setup | client app, must be downloaded |
+
+**Two ways a question steers you to Data Loader:** volume over 50,000, *or* an object the wizard
+doesn't support. The wizard's list notably **excludes Opportunities and Cases**.
+
+**Export All** is Data Loader only and includes **archived records and the Recycle Bin** —
+distinct from plain Export.
+
+**Relationships on import:** load **parents before children**, and include a column of **parent
+record IDs** in the child file. Imported data still honors required fields and validation rules.
+
+**Data Loader defaults:** blank owner → **the user running the import**; blank currency → **the
+corporate currency**. A value for an *unrestricted* picklist imports fine but is **not** added to
+the active picklist values.
+
+---
+
 ## Not yet covered
 
 Remaining 37 topics, in exam-weight order:
