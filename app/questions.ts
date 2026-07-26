@@ -1750,5 +1750,165 @@ export const questions: Question[] = [
     explanation:
       "The wizard exposes the choice directly. With Data Loader the automation has to be deactivated manually beforehand, which is the practical difference between the two.",
   },
+  {
+    id: "deploy-sandbox-refresh-intervals",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Match the sandbox type to its refresh interval.",
+    options: [
+      "Developer 1 day, Developer Pro 1 day, Partial Copy 5 days, Full Copy 29 days",
+      "Developer 1 day, Developer Pro 5 days, Partial Copy 29 days, Full Copy 30 days",
+      "All sandbox types refresh once every 29 days",
+      "Developer 5 days, Developer Pro 5 days, Partial Copy 29 days, Full Copy 60 days",
+    ],
+    answers: [0],
+    explanation:
+      "Developer and Developer Pro both refresh daily. Partial Copy is 5 days and Full Copy is 29 days. The 5-and-29 pair is the part worth memorizing — a scenario about frequent refreshes is steering away from Full Copy.",
+  },
+  {
+    id: "deploy-sandbox-data-content",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Which two sandbox types contain production data when created?",
+    options: [
+      "Partial Copy, using a subset defined by a template",
+      "Full Copy, containing all production data",
+      "Developer",
+      "Developer Pro",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Developer and Developer Pro copy configuration only. Partial Copy brings a template-defined subset, and Full Copy brings everything. Any requirement mentioning real records rules out the two developer types.",
+  },
+  {
+    id: "deploy-sandbox-storage",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "What is the data storage limit of a Developer Pro sandbox?",
+    options: [
+      "1 GB",
+      "200 MB",
+      "5 GB",
+      "The same as production",
+    ],
+    answers: [0],
+    explanation:
+      "Developer is 200 MB, Developer Pro is 1 GB, Partial Copy is 5 GB of data storage with file storage matching production, and Full Copy matches production for both.",
+  },
+  {
+    id: "deploy-partial-copy-template",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Which statement about sandbox templates is correct?",
+    options: [
+      "A Partial Copy sandbox requires a template to define which records are copied",
+      "Templates are only available for Developer sandboxes",
+      "A Full Copy sandbox requires a template",
+      "Templates control metadata rather than records",
+    ],
+    answers: [0],
+    explanation:
+      "Partial Copy cannot be created without a template, since the template is what defines the subset. Full Copy may optionally use one to reduce the data it brings across, but does not require it.",
+  },
+  {
+    id: "deploy-full-copy-purpose",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Performance and load testing must run in an environment identical to production. Which sandbox fits?",
+    options: [
+      "Full Copy",
+      "Partial Copy",
+      "Developer Pro",
+      "Developer",
+    ],
+    answers: [0],
+    explanation:
+      "Only Full Copy matches production for data and storage, which is what makes performance and load testing meaningful. Its 29-day refresh interval is the cost of that fidelity.",
+  },
+  {
+    id: "deploy-sandbox-email-deliverability",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Users report that a newly refreshed sandbox is not sending any email. What is the most likely cause?",
+    options: [
+      "Salesforce sets email deliverability to 'System Email Only' in new sandboxes",
+      "Email deliverability must be purchased separately for sandboxes",
+      "Sandboxes can never send email under any configuration",
+      "The sandbox has exceeded its storage limit",
+    ],
+    answers: [0],
+    explanation:
+      "This is deliberate: it stops test environments from mailing real contacts. The setting can be changed under Email Deliverability. It is a favorite scenario question because it looks like a defect rather than a default.",
+  },
+  {
+    id: "deploy-sandbox-record-ids",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Which statement about IDs in sandboxes is correct?",
+    options: [
+      "Salesforce record IDs are copied over for Full Copy sandboxes, and field IDs are copied to sandboxes generally",
+      "All record IDs are regenerated in every sandbox type",
+      "Record IDs are never preserved in any sandbox",
+      "Only Developer sandboxes preserve record IDs",
+    ],
+    answers: [0],
+    explanation:
+      "Full Copy preserves record IDs. Field IDs carry across to sandboxes generally, which matters for anything referencing them, such as a Web-to-Case form.",
+  },
+  {
+    id: "deploy-sandbox-edition-availability",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Which statement about sandbox availability by edition is correct?",
+    options: [
+      "Enterprise Edition does not include a Full Copy sandbox, while Performance and Unlimited do",
+      "All editions include every sandbox type",
+      "Only Developer Edition includes sandboxes",
+      "Full Copy sandboxes are included in every paid edition",
+    ],
+    answers: [0],
+    explanation:
+      "The number and types of sandboxes depend on the edition, and some are only available at extra cost. Enterprise not including Full Copy is the specific fact that gets tested.",
+  },
+  {
+    id: "deploy-sandbox-refresh-activation",
+    domain: "App Deployment",
+    topic: "Sandboxes",
+    prompt:
+      "Which two statements about refreshing a sandbox are correct?",
+    options: [
+      "A refresh replaces the sandbox with a new copy from production while keeping its name",
+      "Activation can be automatic or deferred until you choose, using 'activate when ready'",
+      "A refresh merges production changes into the existing sandbox without overwriting work",
+      "A refreshed sandbox always keeps any unreleased changes made inside it",
+    ],
+    answers: [0, 1],
+    explanation:
+      "A refresh is a replacement, not a merge — anything in the sandbox that was not deployed elsewhere is lost. Deferred activation exists so the old sandbox stays usable until the new copy is ready.",
+  },
+  {
+    id: "deploy-advanced-lifecycle-sandboxes",
+    domain: "App Deployment",
+    topic: "Application lifecycle",
+    prompt:
+      "Several projects are developed in parallel, each in its own sandbox. What is the correct progression before production?",
+    options: [
+      "Consolidate the changes in an integration sandbox, then move them to a UAT sandbox for acceptance testing and training",
+      "Deploy each project sandbox directly to production in turn",
+      "Merge all developer sandboxes into a Full Copy sandbox and release from there",
+      "Perform acceptance testing in each individual developer sandbox",
+    ],
+    answers: [0],
+    explanation:
+      "The advanced lifecycle consolidates parallel work in an integration sandbox first, then promotes to a UAT sandbox where users test and train before anything reaches production. The four phases throughout are plan, build, test, deploy.",
+  },
 ];
 

@@ -8,6 +8,7 @@ import {
   domainWeights,
   questions,
 } from "./questions";
+import { domainNeeds, reviewsDue, selectSession } from "./engine";
 
 type AnswerRecord = {
   questionId: string;
@@ -16,9 +17,16 @@ type AnswerRecord = {
   answeredAt: string;
 };
 
+type ActiveSession = {
+  title: string;
+  questionIds: string[];
+  index: number;
+};
+
 type StoredProgress = {
   answers: AnswerRecord[];
   completedSessions: number;
+  activeSession?: ActiveSession;
 };
 
 type SessionResult = {
@@ -56,6 +64,31 @@ function percentage(correct: number, total: number) {
   return total ? Math.round((correct / total) * 100) : 0;
 }
 
+function questionById(id: string) {
+  return questions.find((question) => question.id === id);
+}
+
+/** Old payloads predate activeSession, so every field falls back to a safe default. */
+function parseProgress(raw: string): StoredProgress {
+  const saved = JSON.parse(raw) as Partial<StoredProgress> | null;
+  const answers = Array.isArray(saved?.answers) ? (saved?.answers as AnswerRecord[]) : [];
+  const completedSessions = Number(saved?.completedSessions ?? 0) || 0;
+  const stored = saved?.activeSession;
+  // Ids that left the bank are dropped, so a resumed round never hits a blank question.
+  const questionIds = Array.isArray(stored?.questionIds)
+    ? (stored?.questionIds as string[]).filter((id) => Boolean(questionById(id)))
+    : [];
+  const activeSession = questionIds.length
+    ? {
+        title: stored?.title ?? "Saved round",
+        questionIds,
+        index: Math.min(Math.max(Number(stored?.index ?? 0) || 0, 0), questionIds.length),
+      }
+    : undefined;
+
+  return { answers, completedSessions, activeSession };
+}
+
 export default function StudyCoach() {
   const [progress, setProgress] = useState<StoredProgress>({
     answers: [],
@@ -73,11 +106,12 @@ export default function StudyCoach() {
   const [showBrief, setShowBrief] = useState(false);
   const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
   const [showInstallHelp, setShowInstallHelp] = useState(false);
+  const [notice, setNotice] = useState("");
 
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY);
-      if (saved) setProgress(JSON.parse(saved) as StoredProgress);
+      if (saved) setProgress(parseProgress(saved));
     } catch {
       // A blocked storage setting should never block studying.
     }
@@ -151,17 +185,59 @@ export default function StudyCoach() {
     })[0];
   }, [stats]);
 
+  const formatSplit = useMemo(() => {
+    const tally = { single: { correct: 0, attempts: 0 }, multi: { correct: 0, attempts: 0 } };
+    for (const answer of progress.answers) {
+      const question = questionById(answer.questionId);
+      if (!question) continue;
+      const bucket = question.answers.length > 1 ? tally.multi : tally.single;
+      bucket.attempts += 1;
+      if (answer.correct) bucket.correct += 1;
+    }
+    return tally;
+  }, [progress.answers]);
+
+  const dueCount = useMemo(() => reviewsDue(progress.answers, Date.now()), [progress.answers]);
+
+  const resumable =
+    progress.activeSession && progress.activeSession.index < progress.activeSession.questionIds.length
+      ? progress.activeSession
+      : null;
+
   const current = session[index];
 
-  function startSession(title: string, pool: Question[], length: number) {
-    setSession(shuffle(pool).slice(0, Math.min(length, pool.length)));
+  function runSession(title: string, set: Question[], startIndex = 0) {
+    if (!set.length) {
+      setNotice(
+        "Everything you have answered correctly is resting for now. Try a domain practice round or come back tomorrow.",
+      );
+      return;
+    }
+    setNotice("");
+    setSession(set);
     setSessionTitle(title);
-    setIndex(0);
+    setIndex(Math.min(startIndex, set.length - 1));
     setSelected([]);
     setChecked(false);
     setSessionAnswers([]);
     setResult(null);
+    setProgress((previous) => ({
+      ...previous,
+      activeSession: {
+        title,
+        questionIds: set.map((question) => question.id),
+        index: Math.min(startIndex, set.length - 1),
+      },
+    }));
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function startSession(title: string, pool: Question[], length: number) {
+    runSession(title, shuffle(pool).slice(0, Math.min(length, pool.length)));
+  }
+
+  function startPlanned(title: string, length: number) {
+    runSession(title, selectSession(length, progress.answers, Date.now()));
   }
 
   function startDiagnostic() {
@@ -182,25 +258,29 @@ export default function StudyCoach() {
   }
 
   function startAdaptive() {
-    const sorted = [...stats].sort((a, b) => {
-      const aScore = a.attempts ? a.score : 0;
-      const bScore = b.attempts ? b.score : 0;
-      return aScore - bScore || a.attempts - b.attempts;
-    });
-    const focusDomains = sorted.slice(0, 2).map((item) => item.domain);
-    const missedIds = new Set(
-      progress.answers.filter((answer) => !answer.correct).map((answer) => answer.questionId),
-    );
-    const focusPool = questions.filter((question) => focusDomains.includes(question.domain));
-    const ordered = [
-      ...shuffle(focusPool.filter((question) => missedIds.has(question.id))),
-      ...shuffle(focusPool.filter((question) => !missedIds.has(question.id))),
-    ];
-    startSession(
-      `Adaptive focus: ${focusDomains.map((domain) => domainShortNames[domain]).join(" + ")}`,
-      ordered,
-      8,
-    );
+    const needs = domainNeeds(progress.answers, Date.now());
+    const focusDomains = [...domains]
+      .sort((a, b) => needs[b] - needs[a])
+      .slice(0, 2)
+      .map((domain) => domainShortNames[domain]);
+    startPlanned(`Adaptive focus: ${focusDomains.join(" + ")}`, 8);
+  }
+
+  function resumeSession() {
+    const saved = progress.activeSession;
+    if (!saved) return;
+    const set = saved.questionIds
+      .map((id) => questionById(id))
+      .filter((question): question is Question => Boolean(question));
+    if (!set.length) {
+      abandonSession();
+      return;
+    }
+    runSession(saved.title, set, saved.index);
+  }
+
+  function abandonSession() {
+    setProgress((previous) => ({ ...previous, activeSession: undefined }));
   }
 
   function toggleOption(optionIndex: number) {
@@ -229,6 +309,10 @@ export default function StudyCoach() {
     setProgress((previous) => ({
       ...previous,
       answers: [...previous.answers, record],
+      // Store the next unanswered position so a resume never repeats a question.
+      activeSession: previous.activeSession
+        ? { ...previous.activeSession, index: index + 1 }
+        : previous.activeSession,
     }));
   }
 
@@ -245,6 +329,7 @@ export default function StudyCoach() {
     setProgress((previous) => ({
       ...previous,
       completedSessions: previous.completedSessions + 1,
+      activeSession: undefined,
     }));
     setSession([]);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -371,7 +456,7 @@ export default function StudyCoach() {
 
   function resetProgress() {
     if (!window.confirm("Clear all saved answers and scores on this device?")) return;
-    setProgress({ answers: [], completedSessions: 0 });
+    setProgress({ answers: [], completedSessions: 0, activeSession: undefined });
     setResult(null);
   }
 
@@ -379,6 +464,14 @@ export default function StudyCoach() {
 
   if (current) {
     const isCorrect = checked && sameAnswers(selected, current.answers);
+    const rightPicks = selected.filter((option) => current.answers.includes(option)).length;
+    // Multi-select misses are still all-or-nothing; this only names the shape of the miss.
+    const partialNote =
+      checked && !isCorrect && current.answers.length > 1
+        ? rightPicks === 0
+          ? `${current.answers.length === 2 ? "Both picks" : "All of your picks"} were wrong — reread the scenario before the options.`
+          : `You had ${rightPicks} of ${current.answers.length} — the miss was on the other choice. It still scores as incorrect.`
+        : null;
     return (
       <main className="quiz-shell">
         <header className="quiz-topbar">
@@ -451,6 +544,7 @@ export default function StudyCoach() {
             {checked && (
               <div className={`feedback ${isCorrect ? "feedback-correct" : "feedback-review"}`}>
                 <span className="feedback-label">{isCorrect ? "Exactly right" : "Review this one"}</span>
+                {partialNote && <p><strong>{partialNote}</strong></p>}
                 <p>{current.explanation}</p>
               </div>
             )}
@@ -505,14 +599,43 @@ export default function StudyCoach() {
             Practice in short rounds, see why each answer works, and bring your study brief back to
             Codex for a question set shaped around your misses.
           </p>
+          {resumable && (
+            <div className="result-banner">
+              <div>
+                <span className="eyebrow">Unfinished round</span>
+                <h2>{resumable.title}</h2>
+                <p>
+                  Resume — question <strong>{resumable.index + 1}</strong> of{" "}
+                  {resumable.questionIds.length}.
+                </p>
+              </div>
+              <div className="hero-actions">
+                <button className="primary-button" onClick={resumeSession}>
+                  Resume round
+                </button>
+                <button className="text-button" onClick={abandonSession}>
+                  Discard
+                </button>
+              </div>
+            </div>
+          )}
           <div className="hero-actions">
-            <button className="primary-button" onClick={startDiagnostic}>
-              Start 10-question diagnostic
+            <button className="primary-button" onClick={() => startPlanned("Quick 5", 5)}>
+              Quick 5
             </button>
-            <button className="secondary-button" onClick={startAdaptive}>
-              Practice my weak spots
+            <button className="primary-button" onClick={() => startPlanned("Focus 10", 10)}>
+              Focus 10
             </button>
           </div>
+          <div className="hero-actions">
+            <button className="text-button" onClick={startDiagnostic}>
+              Exam-pace check ↗
+            </button>
+            <button className="text-button" onClick={startAdaptive}>
+              Adaptive round
+            </button>
+          </div>
+          {notice && <p className="handoff-privacy">{notice}</p>}
         </div>
 
         <div className="score-card">
@@ -530,6 +653,20 @@ export default function StudyCoach() {
           <div className="readiness-labels">
             <span>Building</span>
             <span>80% practice target</span>
+          </div>
+          <div className="readiness-labels">
+            <span>
+              Single answer:{" "}
+              {formatSplit.single.attempts
+                ? `${percentage(formatSplit.single.correct, formatSplit.single.attempts)}% (${formatSplit.single.correct}/${formatSplit.single.attempts})`
+                : "—"}
+            </span>
+            <span>
+              Multi-select:{" "}
+              {formatSplit.multi.attempts
+                ? `${percentage(formatSplit.multi.correct, formatSplit.multi.attempts)}% (${formatSplit.multi.correct}/${formatSplit.multi.attempts})`
+                : "—"}
+            </span>
           </div>
         </div>
       </section>
@@ -559,7 +696,12 @@ export default function StudyCoach() {
               <span className="eyebrow">Exam map</span>
               <h2>Performance by domain</h2>
             </div>
-            <span className="session-count">{progress.completedSessions} rounds completed</span>
+            <div className="domain-title">
+              <span className="session-count">{progress.completedSessions} rounds completed</span>
+              <span className="session-count">
+                {dueCount} {dueCount === 1 ? "review" : "reviews"} due
+              </span>
+            </div>
           </div>
           <div className="domain-list">
             {stats.map((item) => (

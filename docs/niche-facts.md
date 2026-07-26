@@ -462,6 +462,52 @@ the active picklist values.
 
 ---
 
+## Sandboxes and the application lifecycle
+
+*Diagnostic: only 10% of the exam, but the app's thinnest coverage — worth an evening, not a week.*
+
+| Type | Data storage | Initial data | Refresh |
+| --- | --- | --- | --- |
+| Developer | 200 MB | **configuration only** | **1 day** |
+| Developer Pro | 1 GB | **configuration only** | **1 day** |
+| Partial Copy | **5 GB** (file storage = production) | subset defined by **template** | **5 days** |
+| Full Copy | same as production | all data (template can subset it) | **29 days** |
+
+**The two numbers that matter: 5 and 29.** A scenario emphasizing frequent refreshes is pushing
+you away from Full Copy; one demanding production-identical scale is pushing you toward it.
+
+**Only Partial and Full contain records.** Any requirement mentioning real data rules out both
+developer types immediately.
+
+- **Partial Copy *requires* a template** — it's what defines the subset. Full Copy may optionally
+  use one to reduce what it copies.
+- **Full Copy purpose:** performance testing, load testing, staging identical to production.
+- **Developer Pro purpose:** larger data volumes, integrating multiple developer sandboxes, QA and
+  user training.
+
+**Gotchas that read like bugs:**
+
+- **A new or refreshed sandbox sends no email** — Salesforce sets deliverability to **"System Email
+  Only"** so test environments can't mail real contacts. Change it under Email Deliverability.
+- **A refresh is a replacement, not a merge.** It builds a fresh copy from production and keeps
+  the name; undeployed work in that sandbox is gone. Activation can be automatic or deferred
+  ("activate when ready") so the old one stays usable meanwhile.
+- **Record IDs are preserved in Full Copy**, and field IDs carry to sandboxes generally — which
+  matters for anything referencing them, like a Web-to-Case form.
+
+**Edition:** availability varies, and some types cost extra. **Enterprise does not include Full
+Copy; Performance and Unlimited do.**
+
+**Lifecycle phases: plan → build → test → deploy.**
+
+- *Simple:* change production directly, isolating work with profiles.
+- *With a sandbox:* build and test in the sandbox, then move via change sets.
+- *Advanced (parallel projects):* each project or developer gets a sandbox → consolidate in an
+  **integration sandbox** → promote to a **UAT sandbox** for acceptance testing and training →
+  production.
+
+---
+
 ## Not yet covered
 
 Remaining 37 topics, in exam-weight order:
