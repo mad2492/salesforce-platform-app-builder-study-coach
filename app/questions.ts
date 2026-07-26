@@ -422,5 +422,277 @@ export const questions: Question[] = [
     explanation:
       "Managed packages support versioned upgrades and provide protections suited to distributing an application. Unmanaged packages are more appropriate for sharing editable templates or components.",
   },
+  {
+    id: "fund-wfr-pb-retirement",
+    domain: "Salesforce Fundamentals",
+    topic: "Declarative boundaries",
+    prompt:
+      "An org still runs several active workflow rules and processes. Which two statements describe what an app builder can do with them today?",
+    options: [
+      "Existing active workflow rules and processes keep running and can be edited, activated, or deactivated",
+      "New workflow rules and processes can still be created in any production org",
+      "Creating new workflow rules and processes is blocked, except in Developer Edition orgs for use in managed packages",
+      "The Migrate to Flow tool converts Apex triggers into record-triggered flows",
+    ],
+    answers: [0, 2],
+    explanation:
+      "Salesforce blocked the creation of new workflow rules in Winter '23 and new processes in Summer '23, leaving creation available only in Developer Edition orgs for managed packages. Anything already in the org continues to run and remains editable. The Migrate to Flow tool converts workflow rules and processes, not Apex triggers.",
+  },
+  {
+    id: "fund-declarative-advantages",
+    domain: "Salesforce Fundamentals",
+    topic: "Declarative boundaries",
+    prompt:
+      "A team is deciding between a declarative build and an Apex build. Which two are recognized advantages of the declarative approach?",
+    options: [
+      "It is generally faster to deliver and requires less ongoing maintenance",
+      "It automatically picks up platform upgrades with each Salesforce release",
+      "It removes the need to test the solution before deployment",
+      "It allows unlimited SOQL queries inside a single transaction",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Declarative configuration is cheaper and faster to build, needs less maintenance, and inherits improvements automatically at each release. It still has to be tested, and it does not grant any escape from platform transaction limits.",
+  },
+  {
+    id: "fund-custom-web-service",
+    domain: "Salesforce Fundamentals",
+    topic: "Programmatic use cases",
+    prompt:
+      "An external system must call into Salesforce through a custom web service endpoint that the org defines itself. What should the app builder recommend?",
+    options: [
+      "Build the service with Apex",
+      "Configure it with Flow Builder",
+      "Create an external object",
+      "Add a custom formula field",
+    ],
+    answers: [0],
+    explanation:
+      "Exposing a custom web service is one of the few requirements with no declarative option at all. Custom web services require Apex.",
+  },
+  {
+    id: "fund-inbound-email-apex",
+    domain: "Salesforce Fundamentals",
+    topic: "Programmatic use cases",
+    prompt:
+      "Inbound email must be parsed for attachments and routed using logic that standard Email-to-Case settings cannot express. What is required?",
+    options: [
+      "An Apex email service handler",
+      "A validation rule on Case",
+      "An assignment rule",
+      "A quick action on Case",
+    ],
+    answers: [0],
+    explanation:
+      "Email-to-Case handles standard routing through configuration. Once the processing logic exceeds what those settings support, an Apex email handler is required.",
+  },
+  {
+    id: "fund-extend-org-options",
+    domain: "Salesforce Fundamentals",
+    topic: "Extending the org",
+    prompt:
+      "A business need cannot be met by standard functionality. Which three routes are available for extending Salesforce?",
+    options: [
+      "Configure it with declarative tools from the Setup menu",
+      "Buy and install a package from the AppExchange",
+      "Build it with programmatic tools",
+      "Ask Salesforce Support to add the feature to the org",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "The three options are configure, buy, and build. Support does not add custom functionality to an org on request.",
+  },
+  {
+    id: "fund-override-standard-action",
+    domain: "Salesforce Fundamentals",
+    topic: "Programmatic use cases",
+    prompt:
+      "A standard action must be overridden in Lightning Experience with custom client-side behavior, and the result must not fall back to the Salesforce Classic visual design. What should be used?",
+    options: [
+      "A custom Lightning component built with LWC or Aura",
+      "A Visualforce page",
+      "A custom link",
+      "A page layout override",
+    ],
+    answers: [0],
+    explanation:
+      "Custom Lightning components are the right tool for overriding standard actions and invoking client-side logic in Lightning Experience. Visualforce retains the Classic look and feel, which is why it is the wrong answer when the requirement calls out Lightning styling.",
+  },
+  {
+    id: "fund-complex-report-boundary",
+    domain: "Salesforce Fundamentals",
+    topic: "Declarative boundaries",
+    prompt:
+      "A reporting requirement cannot be expressed in the standard report builder. What is the appropriate next step?",
+    options: [
+      "Build the report presentation with Visualforce or a custom Lightning component backed by Apex",
+      "Create a new report type and try again",
+      "Grant the running user View All Data",
+      "Convert the report folder to public",
+    ],
+    answers: [0],
+    explanation:
+      "Report types and folder sharing address which data and which users a report reaches, not the limits of the report builder itself. When the requirement exceeds those limits, the reporting interface has to be built programmatically.",
+  },
+  {
+    id: "fund-callout-boundary",
+    domain: "Salesforce Fundamentals",
+    topic: "Declarative boundaries",
+    prompt:
+      "An org needs to consume an external HTTP web service. Which statement best describes the boundary between the declarative and programmatic options?",
+    options: [
+      "Flow Builder can consume a straightforward service, but complex request or response logic requires Apex",
+      "All HTTP callouts require Apex without exception",
+      "All HTTP callouts can be handled declaratively without exception",
+      "HTTP callouts are only possible from a managed package",
+    ],
+    answers: [0],
+    explanation:
+      "Consuming a web service is a good example of a shifting boundary: Flow Builder covers the simple case, and Apex takes over once the logic around the callout becomes complex. Providing a custom web service, by contrast, always requires Apex.",
+  },
+  {
+    id: "auto-rollup-max-count",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "An object already carries 25 roll-up summary fields and the business needs more. What is true?",
+    options: [
+      "25 is the default maximum, and Salesforce Support can raise it to 40",
+      "25 is a hard limit that cannot be raised under any circumstances",
+      "The limit is per relationship, so a new master-detail relationship resets it",
+      "The limit only applies to custom objects",
+    ],
+    answers: [0],
+    explanation:
+      "The default ceiling is 25 roll-up summary fields per object, and Salesforce Support can increase it to a maximum of 40.",
+  },
+  {
+    id: "auto-rollup-blocks-conversion",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "An app builder tries to convert a master-detail relationship to a lookup relationship and the change is rejected. The parent object has a roll-up summary field over the child. What explains the failure?",
+    options: [
+      "A roll-up summary field on the parent prevents converting master-detail to lookup",
+      "Master-detail relationships can never be converted to lookup relationships",
+      "The child object has too many records to allow conversion",
+      "Conversion requires the parent object to have no page layouts",
+    ],
+    answers: [0],
+    explanation:
+      "Roll-up summary fields depend on the master-detail relationship. While one exists on the parent, the relationship cannot be converted to lookup. Removing the roll-up summary field first allows the conversion.",
+  },
+  {
+    id: "auto-rollup-field-type-matrix",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "Which two statements correctly describe which field types each roll-up type supports?",
+    options: [
+      "SUM supports number, currency, and percent fields",
+      "MIN and MAX additionally support date and date/time fields",
+      "SUM supports date fields so that durations can be totaled",
+      "COUNT requires a numeric field to be selected on the child object",
+    ],
+    answers: [0, 1],
+    explanation:
+      "SUM is limited to number, currency, and percent. MIN and MAX accept those same types plus date and date/time. COUNT selects no field at all — it simply counts related records.",
+  },
+  {
+    id: "auto-rollup-date-min-max",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "An Account must display the date of its earliest related Opportunity. Which roll-up type over the Opportunity created date returns it?",
+    options: [
+      "MIN",
+      "MAX",
+      "SUM",
+      "COUNT",
+    ],
+    answers: [0],
+    explanation:
+      "Over a date or date/time field, MIN returns the oldest value and MAX returns the most recent. Earliest means MIN — a pairing that is easy to invert under exam pressure.",
+  },
+  {
+    id: "auto-rollup-formula-restrictions",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "Which two kinds of field cannot be summarized by a roll-up summary field?",
+    options: [
+      "A formula field that references a field on another object",
+      "A formula field that uses dynamic date functions such as TODAY() or NOW()",
+      "A currency field on the child object",
+      "A percent field on the child object",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Cross-object formula references and formulas containing dynamic date functions are both excluded from roll-up summaries. Plain currency and percent fields are valid SUM targets. Autonumber fields are also excluded.",
+  },
+  {
+    id: "auto-rollup-autonumber",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "An app builder wants a roll-up summary over an Autonumber field on the child object. What happens?",
+    options: [
+      "Autonumber fields cannot be summarized by a roll-up summary field",
+      "It works, but only with the COUNT roll-up type",
+      "It works and returns the highest sequence issued",
+      "It works only if the Autonumber field has no display format",
+    ],
+    answers: [0],
+    explanation:
+      "Autonumber is not a valid field to summarize. To count child records, use the COUNT roll-up type, which needs no field selected.",
+  },
+  {
+    id: "auto-rollup-standard-relationships",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "Roll-up summary fields are supported on a limited set of standard relationships. Which three are supported?",
+    options: [
+      "Account summarizing Opportunity records",
+      "Opportunity summarizing Opportunity Product records",
+      "Campaign summarizing Campaign Member records",
+      "Contact summarizing Case records",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "Account/Opportunity, Opportunity/Opportunity Product, and Campaign/Campaign Member behave as master-detail for this purpose. Contact to Case is a lookup relationship and is not supported.",
+  },
+  {
+    id: "auto-rollup-error-location",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "A validation rule references a roll-up summary field and the app builder wants the error to appear on that field. What is the constraint?",
+    options: [
+      "A roll-up summary field cannot be selected as the Error Location field",
+      "Roll-up summary fields cannot be referenced by validation rules at all",
+      "The validation rule must be moved to the child object",
+      "The error location must always be set to the record header",
+    ],
+    answers: [0],
+    explanation:
+      "A validation rule can reference a roll-up summary field in its formula, but the field cannot be chosen as the Error Location. The error has to surface at the top of the page instead.",
+  },
+  {
+    id: "auto-rollup-lookup-workaround",
+    domain: "Business Logic and Process Automation",
+    topic: "Roll-up summaries",
+    prompt:
+      "A total must be maintained on a parent record, but the child is related through a custom lookup relationship. Which two approaches are appropriate?",
+    options: [
+      "Use Flow Builder to calculate and write the total to the parent",
+      "Install a third-party roll-up tool from the AppExchange",
+      "Create a standard roll-up summary field on the parent",
+      "Add a cross-object formula field on the parent that sums the children",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Native roll-up summary fields require master-detail, so a lookup relationship needs another mechanism: Flow, an Apex trigger, batch or scheduled Apex, or an AppExchange tool. A cross-object formula can reference a parent from a child, but it cannot aggregate children onto a parent.",
+  },
 ];
 
