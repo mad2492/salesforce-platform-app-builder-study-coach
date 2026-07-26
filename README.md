@@ -36,6 +36,12 @@ Every push to `main` automatically builds and publishes the static study coach t
 
 Progress is browser-local. A phone and a computer maintain separate scores unless their study briefs are brought back to Codex and combined manually.
 
+### Publish a study check-in
+
+After answering at least one question, choose **Publish check-in for review** in the Coach's Call panel. Builder Bench opens a public GitHub issue prefilled with overall accuracy, domain performance, recent missed topics, and a review request. Nothing is published until **Submit new issue** is selected on GitHub.
+
+Future Codex or Claude sessions can then review the latest issue labeled `study-check-in` and use it to propose targeted questions through a pull request. No GitHub credential or AI API key is stored in the app.
+
 ### Add it to your phone
 
 - **iPhone or iPad:** Open the live site in Safari, tap **Share**, choose **Add to Home Screen**, then tap **Add**.
