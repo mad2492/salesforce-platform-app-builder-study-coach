@@ -439,7 +439,8 @@ a:focus-visible {
   margin: 8px 0 14px;
 }
 
-.copy-button {
+.copy-button,
+.publish-button {
   background: var(--coral);
   border: 0;
   color: white;
@@ -449,10 +450,33 @@ a:focus-visible {
   width: 100%;
 }
 
-.copy-button:disabled {
+.handoff-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.publish-button {
+  background: transparent;
+  border: 1px solid #6b7e76;
+}
+
+.publish-button:hover {
+  border-color: #97d2ba;
+}
+
+.copy-button:disabled,
+.publish-button:disabled {
   cursor: not-allowed;
   opacity: 0.42;
   transform: none;
+}
+
+.handoff-privacy {
+  color: #8fa099;
+  display: block;
+  font-size: 10px;
+  line-height: 1.5;
+  margin-top: 10px;
 }
 
 .brief-preview {

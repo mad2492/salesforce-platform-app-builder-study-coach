@@ -74,3 +74,18 @@ test("ships installable phone app metadata and guidance", async () => {
   assert.match(source, /Add to Home Screen/);
   assert.match(source, /beforeinstallprompt/);
 });
+
+test("creates a structured GitHub study check-in without embedding credentials", async () => {
+  const source = await readFile(new URL("../app/StudyCoach.tsx", import.meta.url), "utf8");
+  const template = await readFile(
+    new URL("../.github/ISSUE_TEMPLATE/study-check-in.md", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(source, /salesforce-platform-app-builder-study-coach\/issues\/new/);
+  assert.match(source, /builder-bench-check-in:v1/);
+  assert.match(source, /Publish check-in for review/);
+  assert.match(source, /Nothing is posted until you tap Submit new issue/);
+  assert.doesNotMatch(source, /github_pat_|ghp_|Authorization:\s*Bearer/i);
+  assert.match(template, /labels: study-check-in/);
+});
