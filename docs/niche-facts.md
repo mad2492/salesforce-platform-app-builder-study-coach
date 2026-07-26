@@ -275,6 +275,57 @@ linked to leads.
 
 ---
 
+## Automation: choosing the tool
+
+*Diagnostic: four Business Logic misses were flow-related.*
+
+**Before-save vs. after-save is the highest-yield distinction in this domain:**
+
+| | Before-save | After-save |
+| --- | --- | --- |
+| Runs | before commit | after commit |
+| Can update | **triggering record only** | triggering record, related records, other records |
+| Interaction elements | **Custom Error Message only** | Custom Error Message, Action, Subflow |
+| Scheduled / async paths | **no** | yes |
+| Speed | faster | slower |
+| Use for | field defaulting, calculated fields | cross-object updates, notifications, callouts, Apex |
+
+If a requirement mentions *anything* beyond the triggering record — a related record, an email,
+an Apex call, a scheduled path — it cannot be before-save. That one rule answers most of them.
+
+**Flow types, by trigger:**
+
+| Type | Triggered by | Use for |
+| --- | --- | --- |
+| Screen | manual — button, page, tab, URL | guided input, call center scripts |
+| Record-Triggered | record create / update / delete | see table above |
+| Schedule-Triggered | date/time schedule | recurring batch processing |
+| Platform Event-Triggered | platform event message | reacting to external system events |
+| Autolaunched (no trigger) | another flow, process, Apex, API | reusable logic |
+| Orchestration | record change or manual | multi-step, multi-user work over time |
+
+**Decision shortcuts:**
+
+- Multiple users, sequential assigned tasks over time → **Orchestration**
+- Structured approve / reject / **recall** cycle → **Approval Process**
+- Guided input collection → **Screen Flow**
+- Batch on a schedule → **Schedule-Triggered**
+
+Orchestration and approval processes are *not* substitutes — a question describing a human
+approval decision wants an approval process even though orchestration also spans users.
+
+**Element gotchas:**
+
+- **Subflow is not supported in platform event-triggered flows.**
+- **Custom Error** rolls back the record change, and works in **both** before-save and after-save.
+- **External Services** call a REST API declaratively — needs an endpoint URL and a **named
+  credential** registered in Setup; Salesforce then generates invocable actions.
+
+**Flow Trigger Explorer** shows every record-triggered flow on an object, split by trigger type
+and before/after save, including which have asynchronous paths, and manages version activation.
+
+---
+
 ## Not yet covered
 
 Remaining 37 topics, in exam-weight order:

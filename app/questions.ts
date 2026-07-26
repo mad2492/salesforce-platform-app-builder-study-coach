@@ -1126,5 +1126,149 @@ export const questions: Question[] = [
     explanation:
       "Campaign hierarchy is a self-lookup on the Campaign object. It is a good counter-example to the assumption that any roll-up-style grouping must be master-detail.",
   },
+  {
+    id: "auto-before-save-scope",
+    domain: "Business Logic and Process Automation",
+    topic: "Record-triggered flows",
+    prompt:
+      "A record-triggered flow must set a field on the record being saved, as fast as possible. Which two statements about a before-save flow are correct?",
+    options: [
+      "It can only update fields on the triggering record",
+      "It runs before the record is committed to the database",
+      "It can also update related records in the same run",
+      "It supports scheduled and asynchronous paths",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Before-save flows are the fast path: they run prior to commit and are limited to the triggering record. Updating related records, sending notifications, calling Apex, and using scheduled or asynchronous paths all require after-save.",
+  },
+  {
+    id: "auto-after-save-capabilities",
+    domain: "Business Logic and Process Automation",
+    topic: "Record-triggered flows",
+    prompt:
+      "A requirement needs cross-object updates and an email notification when a record is saved. Which configuration fits?",
+    options: [
+      "An after-save record-triggered flow",
+      "A before-save record-triggered flow",
+      "A schedule-triggered flow",
+      "An autolaunched flow with no trigger",
+    ],
+    answers: [0],
+    explanation:
+      "After-save flows run once the record is committed and can update the triggering record, related records, and other records, plus send notifications and call Apex. Before-save cannot do any of that.",
+  },
+  {
+    id: "auto-before-save-elements",
+    domain: "Business Logic and Process Automation",
+    topic: "Record-triggered flows",
+    prompt:
+      "Which interaction element is supported in a before-save record-triggered flow?",
+    options: [
+      "Custom Error Message only",
+      "Custom Error Message, Action, and Subflow",
+      "Action and Subflow only",
+      "Screen elements",
+    ],
+    answers: [0],
+    explanation:
+      "Before-save supports the Custom Error Message element alone. After-save adds Action and Subflow. Screen elements belong to screen flows, which are manually triggered.",
+  },
+  {
+    id: "auto-flow-type-selection",
+    domain: "Business Logic and Process Automation",
+    topic: "Flow types",
+    prompt:
+      "Match the requirement to the flow type: a batch of records must be processed every night at 2 a.m.",
+    options: [
+      "Schedule-Triggered Flow",
+      "Record-Triggered Flow",
+      "Platform Event-Triggered Flow",
+      "Screen Flow",
+    ],
+    answers: [0],
+    explanation:
+      "Schedule-triggered flows run on a date/time schedule for recurring batch processing. Record-triggered flows need a record change, and platform event-triggered flows need an event message.",
+  },
+  {
+    id: "auto-orchestration-vs-approval",
+    domain: "Business Logic and Process Automation",
+    topic: "Flow types",
+    prompt:
+      "Which two statements correctly distinguish Flow Orchestration from an Approval Process?",
+    options: [
+      "Orchestration coordinates multi-step work assigned to multiple users over time",
+      "An approval process handles a structured approve, reject, and recall cycle",
+      "Orchestration replaces approval processes entirely",
+      "An approval process is the right tool for sequential data-entry tasks across teams",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Orchestration sequences multi-user work; approval processes model a human approval decision with approve, reject, and recall. They solve different problems and neither replaces the other.",
+  },
+  {
+    id: "auto-subflow-platform-event",
+    domain: "Business Logic and Process Automation",
+    topic: "Flow elements",
+    prompt:
+      "Where is the Subflow element NOT supported?",
+    options: [
+      "In platform event-triggered flows",
+      "In screen flows",
+      "In autolaunched flows",
+      "In after-save record-triggered flows",
+    ],
+    answers: [0],
+    explanation:
+      "Subflow launches another active flow and passes values through input and output variables, but it is not available in platform event-triggered flows.",
+  },
+  {
+    id: "auto-custom-error-rollback",
+    domain: "Business Logic and Process Automation",
+    topic: "Flow elements",
+    prompt:
+      "What does the Custom Error action do when it fires in a record-triggered flow?",
+    options: [
+      "It displays a targeted error and rolls back the associated record change",
+      "It logs the error and allows the save to complete",
+      "It retries the flow asynchronously",
+      "It is only available in screen flows",
+    ],
+    answers: [0],
+    explanation:
+      "Custom Error shows a message in a window or inline on a field and rolls back the record change. It is supported in both before-save and after-save flows.",
+  },
+  {
+    id: "auto-external-service-action",
+    domain: "Business Logic and Process Automation",
+    topic: "Flow elements",
+    prompt:
+      "A flow must call an external REST API without writing code. What is required?",
+    options: [
+      "An External Service registered with an endpoint URL and a named credential",
+      "An Apex class implementing the callout",
+      "A platform event subscription",
+      "A custom Visualforce page",
+    ],
+    answers: [0],
+    explanation:
+      "External Services connect Flow Builder to a REST API declaratively. Once registered in Setup with an endpoint and named credential, Salesforce generates invocable actions the flow can call as an HTTP Callout.",
+  },
+  {
+    id: "auto-flow-trigger-explorer",
+    domain: "Business Logic and Process Automation",
+    topic: "Flow administration",
+    prompt:
+      "An administrator needs to see every record-triggered flow on an object, in what order they run, and which contain asynchronous paths. Which tool shows this?",
+    options: [
+      "Flow Trigger Explorer",
+      "The Migrate to Flow tool",
+      "Setup Audit Trail",
+      "Schema Builder",
+    ],
+    answers: [0],
+    explanation:
+      "Flow Trigger Explorer lists record-triggered flows per object and trigger type, separates before-save from after-save, surfaces asynchronous paths, and lets versions be activated or deactivated.",
+  },
 ];
 
