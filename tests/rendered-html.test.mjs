@@ -47,3 +47,11 @@ test("ships the complete weighted question bank", async () => {
   assert.match(source, /"App Deployment": 10/);
 });
 
+test("builds a GitHub Pages site under the repository path", async () => {
+  const html = await readFile(new URL("../pages-dist/index.html", import.meta.url), "utf8");
+
+  assert.match(html, /<div id="root"><\/div>/);
+  assert.match(html, /\/salesforce-platform-app-builder-study-coach\/assets\/[^"']+\.js/);
+  assert.match(html, /\/salesforce-platform-app-builder-study-coach\/assets\/[^"']+\.css/);
+  assert.match(html, /Builder Bench \| Platform App Builder Study Coach/);
+});

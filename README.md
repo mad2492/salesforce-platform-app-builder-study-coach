@@ -1,6 +1,8 @@
 # Builder Bench
 
-Builder Bench is a private, local study coach for the Salesforce Certified Platform App Builder exam. It turns exam preparation into short, interactive practice rounds and produces a compact study brief that can be pasted into Codex for follow-up coaching.
+Builder Bench is a personal study coach for the Salesforce Certified Platform App Builder exam. It turns exam preparation into short, interactive practice rounds and produces a compact study brief that can be pasted into Codex for follow-up coaching.
+
+Study online at [mad2492.github.io/salesforce-platform-app-builder-study-coach](https://mad2492.github.io/salesforce-platform-app-builder-study-coach/).
 
 ## What it includes
 
@@ -27,6 +29,12 @@ pnpm run dev
 
 Then open `http://localhost:3000/`.
 
+## GitHub Pages
+
+Every push to `main` automatically builds and publishes the static study coach through GitHub Pages. The online version uses the repository subpath configured in `vite.pages.config.ts`.
+
+Progress is browser-local. A phone and a computer maintain separate scores unless their study briefs are brought back to Codex and combined manually.
+
 ## Verify
 
 ```bash
@@ -41,4 +49,3 @@ The application uses browser storage only. Answers and scores stay on the device
 - `app/questions.ts` — question bank and official exam-domain weights
 - `app/globals.css` — visual system and responsive behavior
 - `Start Builder Bench.cmd` — one-click Windows launcher
-
