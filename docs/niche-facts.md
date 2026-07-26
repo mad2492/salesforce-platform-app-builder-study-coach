@@ -123,6 +123,48 @@ to a child, but cannot aggregate children up to a parent.
 
 ---
 
+## Sharing and visibility
+
+*Diagnostic: this cluster accounted for several Fundamentals misses. Highest-priority section.*
+
+**Three layers, in order.** Each opens up what the one before it allows:
+
+1. **Object-level** — profiles and permission sets. Read / Create / Edit / Delete.
+2. **Record-level** — organization-wide defaults, then role hierarchy, sharing rules, manual sharing.
+3. **Field-level** — field-level security. Visible / Read-Only.
+
+**Organization-wide defaults set the baseline, and the baseline is the only thing that
+restricts.** Everything layered on top can *only* grant more.
+
+- **Sharing rules cannot take access away.** Owner-based or criteria-based, they only open up.
+  To restrict, tighten the OWD. This is the single most-tested misconception here.
+- **Role hierarchy grants access vertically, never horizontally.** A manager sees records owned
+  by or shared with people below them. Two peers in the same role still can't see each other.
+- **Manual sharing** is for individual records when no rule can describe the users or criteria.
+  Only the **record owner or someone with full access** can do it.
+- Criteria-based sharing rules have an option to include records owned by **high-volume site
+  or system users**.
+
+**Campaign Member has two special OWDs — know the pair:**
+
+| Setting | Access derives from |
+| --- | --- |
+| **Controlled by Campaign Member** | the related **contact or lead** record |
+| **Controlled by Campaign** | the related **campaign** |
+
+Standard OWD options otherwise: Private · Public Read Only · Public Read/Write · Controlled by Parent.
+
+**Field-level security vs. page layout** — removing a field from a layout hides it *in the
+interface only*. The value is still reachable through reports and the API. Real restriction
+requires FLS. Decoy: "remove it from the page layout."
+
+**Profiles vs. permission sets** — reach for a **permission set** to give a subset of users
+something extra; don't clone a profile. Standard profiles can't be edited directly anyway.
+**Restricted Profile Cloning** (User Management Settings) stops a clone from carrying
+permissions the org doesn't actually have.
+
+---
+
 ## Not yet covered
 
 Remaining 37 topics, in exam-weight order:

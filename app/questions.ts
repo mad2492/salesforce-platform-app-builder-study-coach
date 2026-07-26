@@ -694,5 +694,133 @@ export const questions: Question[] = [
     explanation:
       "Native roll-up summary fields require master-detail, so a lookup relationship needs another mechanism: Flow, an Apex trigger, batch or scheduled Apex, or an AppExchange tool. A cross-object formula can reference a parent from a child, but it cannot aggregate children onto a parent.",
   },
+  {
+    id: "fund-owd-campaign-member",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Marketing users should see only the campaign members whose related contact or lead records they can already access. Which organization-wide default on Campaign Member achieves this?",
+    options: [
+      "Controlled by Campaign Member",
+      "Controlled by Campaign",
+      "Private",
+      "Public Read Only",
+    ],
+    answers: [0],
+    explanation:
+      "Campaign Member has two special organization-wide defaults. 'Controlled by Campaign Member' ties visibility to the underlying contact or lead record. 'Controlled by Campaign' instead ties it to access on the parent campaign. The pair is easy to confuse and is exactly what gets tested.",
+  },
+  {
+    id: "fund-owd-controlled-by-campaign",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Users should be able to open a campaign member record only when they have access to the related campaign, and one public group needs access to all campaign members regardless. What should be configured?",
+    options: [
+      "Set the Campaign Member organization-wide default to 'Controlled by Campaign', then add a sharing rule for the public group",
+      "Set the Campaign Member organization-wide default to 'Controlled by Campaign Member'",
+      "Set the Campaign Member organization-wide default to Private and rely on the role hierarchy",
+      "Grant the public group View All Data",
+    ],
+    answers: [0],
+    explanation:
+      "'Controlled by Campaign' derives access from the parent campaign. The broader group access is then layered on with a sharing rule, since organization-wide defaults set the baseline and sharing opens it up.",
+  },
+  {
+    id: "fund-sharing-rules-cannot-restrict",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "An administrator wants to use a sharing rule to take access away from a group of users who currently have it. What is the outcome?",
+    options: [
+      "Sharing rules only open access up; they cannot restrict it",
+      "The sharing rule removes access as long as it is criteria-based",
+      "The sharing rule removes access only for users below in the role hierarchy",
+      "The sharing rule removes access once the organization-wide default is Public Read/Write",
+    ],
+    answers: [0],
+    explanation:
+      "Sharing rules — whether owner-based or criteria-based — can only grant additional access. Restricting access means tightening the organization-wide default, since that is what sets the baseline.",
+  },
+  {
+    id: "fund-role-hierarchy-vertical",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Two sales reps hold the same role and cannot see one another's records. Their shared manager can see both. Which statement explains this?",
+    options: [
+      "The role hierarchy grants access vertically to users above, not horizontally between peers",
+      "The role hierarchy grants access to every user assigned the same role",
+      "Peer access requires the organization-wide default to be Private",
+      "Manual sharing is required before a manager can see a subordinate's records",
+    ],
+    answers: [0],
+    explanation:
+      "Access flows up the hierarchy: a user above sees records owned by or shared with users below. It never flows sideways between peers. Sharing records across peers needs a sharing rule or manual sharing.",
+  },
+  {
+    id: "fund-manual-sharing-when",
+    domain: "Salesforce Fundamentals",
+    topic: "Sharing and visibility",
+    prompt:
+      "Access to a handful of individual records must be granted where no consistent rule can describe the users or the record criteria. Which two statements are correct?",
+    options: [
+      "Manual sharing is the appropriate mechanism",
+      "It can be performed by the record owner or a user with full access",
+      "It can be performed by any user who can view the record",
+      "It grants access to every record matching the same criteria",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Manual sharing exists precisely for the case where a rule cannot be defined. Only the record owner, or someone with full access, can share a record that way — and it applies to that single record, not a matching set.",
+  },
+  {
+    id: "fund-fls-vs-page-layout",
+    domain: "Salesforce Fundamentals",
+    topic: "Object and field access",
+    prompt:
+      "A field was removed from the page layout, but users can still reach its value through reports and the API. Why?",
+    options: [
+      "Page layouts control the interface; field-level security controls actual access",
+      "Removing a field from a layout takes up to 24 hours to apply",
+      "Reports always bypass field-level security",
+      "The field must also be deleted from the object to hide it",
+    ],
+    answers: [0],
+    explanation:
+      "Page layout changes only affect what the record page displays. To genuinely restrict a field, set field-level security. This distinction is a reliable source of exam questions.",
+  },
+  {
+    id: "fund-permission-set-over-profile",
+    domain: "Salesforce Fundamentals",
+    topic: "Object and field access",
+    prompt:
+      "A small group of users needs one extra permission that their profile does not grant. What is the recommended approach?",
+    options: [
+      "Assign a permission set that grants the additional permission",
+      "Clone the profile and add the permission to the clone",
+      "Modify the standard profile directly",
+      "Move the users higher in the role hierarchy",
+    ],
+    answers: [0],
+    explanation:
+      "Permission sets are the recommended way to extend access to a subset of users without proliferating custom profiles. Standard profiles cannot be edited directly in any case.",
+  },
+  {
+    id: "fund-restricted-profile-cloning",
+    domain: "Salesforce Fundamentals",
+    topic: "Object and field access",
+    prompt:
+      "Which setting ensures that a cloned profile only enables permissions that are actually available to the org?",
+    options: [
+      "Restricted Profile Cloning, in User Management Settings",
+      "Enhanced Profile List Views",
+      "Restricted Login Hours",
+      "Field-Level Security Inheritance",
+    ],
+    answers: [0],
+    explanation:
+      "Restricted Profile Cloning is enabled in User Management Settings. It prevents a clone from carrying permissions the org itself does not have available.",
+  },
 ];
 
