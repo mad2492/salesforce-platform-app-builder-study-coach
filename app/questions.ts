@@ -1270,5 +1270,133 @@ export const questions: Question[] = [
     explanation:
       "Flow Trigger Explorer lists record-triggered flows per object and trigger type, separates before-save from after-save, surfaces asynchronous paths, and lets versions be activated or deactivated.",
   },
+  {
+    id: "data-junction-two-master-detail",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "Candidates must be able to apply to many positions, and each position must accept many candidates. What is required?",
+    options: [
+      "A junction object with two master-detail relationship fields, one to each parent",
+      "A junction object with two lookup relationship fields, one to each parent",
+      "A single master-detail relationship from Candidate to Position",
+      "A hierarchical relationship between Candidate and Position",
+    ],
+    answers: [0],
+    explanation:
+      "Many-to-many is implemented with a junction object carrying two master-detail relationship fields. Lookups would not create the many-to-many behavior, and hierarchical relationships exist only on the User object.",
+  },
+  {
+    id: "data-junction-report-scope",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "A many-to-many relationship provides two standard report types. What determines the scope of records returned?",
+    options: [
+      "The master object listed first in the report type",
+      "The junction object's sharing settings",
+      "Whichever master object has more records",
+      "The order in which the master-detail fields were created",
+    ],
+    answers: [0],
+    explanation:
+      "Two standard report types are generated, joining the masters and the junction. The master object listed first sets the scope — a genuinely niche detail that separates people on reporting questions.",
+  },
+  {
+    id: "data-master-detail-limit",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "Which two statements about master-detail relationships are correct?",
+    options: [
+      "An object can have up to two master-detail relationships",
+      "A standard object cannot be on the detail side when a custom object is the master",
+      "An object can have unlimited master-detail relationships",
+      "Standard objects can always be on the detail side of any master-detail relationship",
+    ],
+    answers: [0, 1],
+    explanation:
+      "The limit is two per object, and the standard-object restriction is the constraint people forget: a standard object may not be the detail when a custom object is the master.",
+  },
+  {
+    id: "data-master-detail-reparenting",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "A child record in a master-detail relationship must be moved to a different parent. What is true?",
+    options: [
+      "Reparenting is disabled by default, but 'Allow reparenting' can be selected on the relationship",
+      "Reparenting is always permitted in master-detail relationships",
+      "Reparenting requires converting the relationship to a lookup",
+      "Reparenting is only possible through the Data Loader",
+    ],
+    answers: [0],
+    explanation:
+      "By default a detail record cannot change parents. The 'Allow reparenting' option on the master-detail relationship enables it for custom object child records.",
+  },
+  {
+    id: "data-lookup-vs-master-detail",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "Two objects must be linked, but each has to survive independently and keep its own sharing. Which two statements support choosing a lookup?",
+    options: [
+      "The relationship field is optional, and the objects have independent security",
+      "Deleting the parent does not delete the child",
+      "It supports roll-up summary fields on the parent",
+      "The child inherits the parent's sharing settings",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Lookups link loosely: the field is optional, security and deletion are independent. What you give up is roll-up summaries and inherited sharing, both of which need master-detail.",
+  },
+  {
+    id: "data-hierarchical-user-only",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "Each user record must store a reference to another user, such as their director. What should be created?",
+    options: [
+      "A hierarchical relationship field on the User object",
+      "A lookup relationship field on the User object",
+      "A master-detail relationship on the User object",
+      "A junction object between User and User",
+    ],
+    answers: [0],
+    explanation:
+      "Hierarchical relationships exist solely on the User object and are the supported way to relate one user to another. Self-lookups work on other objects — a Contact's 'Assistant', for example — but User is the exception.",
+  },
+  {
+    id: "data-lookup-self-relationship",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "A Contact must reference another Contact as their assistant. What supports this?",
+    options: [
+      "A lookup relationship from Contact to itself",
+      "A hierarchical relationship on Contact",
+      "A junction object between Contact and Contact",
+      "A master-detail relationship from Contact to itself",
+    ],
+    answers: [0],
+    explanation:
+      "Lookup relationships can link an object to itself. Hierarchical is reserved for User, which is precisely why these two questions make good distractors for each other.",
+  },
+  {
+    id: "data-master-detail-delete-behavior",
+    domain: "Data Modeling and Management",
+    topic: "Relationships",
+    prompt:
+      "Salary plans must be removed automatically when the related employee record is deleted. Which relationship achieves this?",
+    options: [
+      "A master-detail relationship from Salary Plan to Employee",
+      "A lookup relationship from Salary Plan to Employee",
+      "A hierarchical relationship on Employee",
+      "A junction object between Salary Plan and Employee",
+    ],
+    answers: [0],
+    explanation:
+      "Master-detail cascades deletion from master to detail. A lookup would leave the salary plans behind. Any requirement phrased as 'deleted when the parent is deleted' points at master-detail.",
+  },
 ];
 

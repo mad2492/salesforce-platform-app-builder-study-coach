@@ -326,6 +326,49 @@ and before/after save, including which have asynchronous paths, and manages vers
 
 ---
 
+## Relationships
+
+*Diagnostic: two Data Modeling misses were junction/relationship questions.*
+
+| | Master-detail | Lookup |
+| --- | --- | --- |
+| Relationship field | **required** | optional |
+| Security / sharing | child **inherits** from parent | independent |
+| Deletion | **cascades** to children | independent |
+| Roll-up summaries | yes | **no** |
+| Max per object | **2** | many |
+| Reparenting | **off by default** ("Allow reparenting" to enable) | free |
+
+**Two master-detail constraints people forget:**
+
+- **Two per object, maximum.**
+- **A standard object cannot be on the detail side when a custom object is the master.**
+
+**Deleting a *detail* record** sends it to the Recycle Bin and leaves the master alone. Cascade
+runs downward only.
+
+**Requirement phrasing → answer:** "deleted when the parent is deleted" or "inherits the parent's
+sharing" → master-detail. "Must exist independently" → lookup.
+
+**Junction objects (many-to-many):**
+
+- A custom object carrying **two master-detail relationship fields**, one per parent.
+- Provides **two standard report types**, joining the masters and the junction.
+- **The master object listed first in the report type determines record scope.** Niche, and
+  exactly the sort of detail that decides a reporting question.
+- Access to junction records is governed by the **sharing settings on each parent**.
+
+**Self-relationships:** a lookup can point an object at itself — Contact → 'Assistant'.
+**The exception is User**, which needs a **hierarchical relationship** instead. Hierarchical
+exists *only* on User. These two make ideal distractors for each other.
+
+**External objects** support lookup, external lookup, and indirect lookup.
+
+Each lookup relationship also generates a **standard report type**, and lookup fields can be
+added to custom report types.
+
+---
+
 ## Not yet covered
 
 Remaining 37 topics, in exam-weight order:
