@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Builder Bench Check-ins"
+  short_description: "Turn study check-ins into targeted questions"
+  default_prompt: "Use $review-builder-bench-checkins to review my latest Builder Bench check-in and develop targeted questions."
