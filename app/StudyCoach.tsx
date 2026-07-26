@@ -26,6 +26,11 @@ type SessionResult = {
   answers: AnswerRecord[];
 };
 
+type InstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+};
+
 const STORAGE_KEY = "builder-bench-progress-v2";
 const domains = Object.keys(domainWeights) as Domain[];
 
@@ -64,6 +69,8 @@ export default function StudyCoach() {
   const [result, setResult] = useState<SessionResult | null>(null);
   const [copyLabel, setCopyLabel] = useState("Copy study brief");
   const [showBrief, setShowBrief] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
+  const [showInstallHelp, setShowInstallHelp] = useState(false);
 
   useEffect(() => {
     try {
@@ -79,6 +86,33 @@ export default function StudyCoach() {
     if (!loaded) return;
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   }, [progress, loaded]);
+
+  useEffect(() => {
+    const captureInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      setInstallPrompt(event as InstallPromptEvent);
+    };
+    const clearInstallPrompt = () => {
+      setInstallPrompt(null);
+      setShowInstallHelp(false);
+    };
+
+    window.addEventListener("beforeinstallprompt", captureInstallPrompt);
+    window.addEventListener("appinstalled", clearInstallPrompt);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", captureInstallPrompt);
+      window.removeEventListener("appinstalled", clearInstallPrompt);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!showInstallHelp) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowInstallHelp(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [showInstallHelp]);
 
   const stats = useMemo(() => {
     return domains.map((domain) => {
@@ -267,6 +301,16 @@ export default function StudyCoach() {
     setShowBrief(!copied);
     setCopyLabel(copied ? "Copied — paste it into Codex" : "Study brief ready below");
     window.setTimeout(() => setCopyLabel("Copy study brief"), 2600);
+  }
+
+  async function installApp() {
+    if (!installPrompt) {
+      setShowInstallHelp(true);
+      return;
+    }
+    await installPrompt.prompt();
+    await installPrompt.userChoice;
+    setInstallPrompt(null);
   }
 
   function resetProgress() {
@@ -493,7 +537,7 @@ export default function StudyCoach() {
         </div>
 
         <aside className="panel coach-panel">
-          <span className="eyebrow">Coach's call</span>
+          <span className="eyebrow">Coach&apos;s call</span>
           <h2>
             {overall.attempts ? `Focus next on ${domainShortNames[weakest.domain]}.` : "Start with a clean baseline."}
           </h2>
@@ -528,14 +572,55 @@ export default function StudyCoach() {
 
       <footer>
         <span>Progress stays in this browser on this device.</span>
-        <a
-          href="https://trailhead.salesforce.com/content/learn/trails/platform-app-builder-certification-prep"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Official Salesforce exam prep ↗
-        </a>
+        <div className="footer-actions">
+          <button className="install-button" onClick={installApp}>
+            Add to Home Screen
+          </button>
+          <a
+            href="https://trailhead.salesforce.com/content/learn/trails/platform-app-builder-certification-prep"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Official Salesforce exam prep ↗
+          </a>
+        </div>
       </footer>
+
+      {showInstallHelp && (
+        <div className="install-overlay" onMouseDown={() => setShowInstallHelp(false)}>
+          <section
+            className="install-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="install-title"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <button
+              className="install-close"
+              onClick={() => setShowInstallHelp(false)}
+              aria-label="Close install instructions"
+            >
+              ×
+            </button>
+            {/* This same static image path serves both the Next and GitHub Pages builds. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="builder-bench-icon-192.png" alt="" width="72" height="72" />
+            <span className="eyebrow">Study from anywhere</span>
+            <h2 id="install-title">Put Builder Bench on your phone.</h2>
+            <div className="install-steps">
+              <div>
+                <strong>iPhone or iPad</strong>
+                <p>Open this page in Safari, tap Share, choose Add to Home Screen, then tap Add.</p>
+              </div>
+              <div>
+                <strong>Android</strong>
+                <p>Open this page in Chrome, tap the menu, then choose Install app or Add to Home screen.</p>
+              </div>
+            </div>
+            <p className="install-note">It will launch like an app. Progress is saved separately on each device.</p>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
