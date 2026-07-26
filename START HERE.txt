@@ -1,0 +1,15 @@
+BUILDER BENCH
+Salesforce Platform App Builder Study Coach
+
+TO OPEN THE APP LATER
+
+1. Double-click "Start Builder Bench.cmd" in this folder.
+2. Keep the small Builder Bench window open while you study.
+3. Close that window when you are finished.
+
+YOUR PROGRESS
+
+Your answers and scores stay in your browser on this computer. They are not
+uploaded or shared. Use "Copy study brief" in the app when you want to bring
+your results back to Codex for a readiness assessment and new questions.
+
