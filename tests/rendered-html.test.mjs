@@ -54,4 +54,23 @@ test("builds a GitHub Pages site under the repository path", async () => {
   assert.match(html, /\/salesforce-platform-app-builder-study-coach\/assets\/[^"']+\.js/);
   assert.match(html, /\/salesforce-platform-app-builder-study-coach\/assets\/[^"']+\.css/);
   assert.match(html, /Builder Bench \| Platform App Builder Study Coach/);
+  assert.match(html, /site\.webmanifest/);
+  assert.match(html, /builder-bench-icon-180\.png/);
+});
+
+test("ships installable phone app metadata and guidance", async () => {
+  const manifest = JSON.parse(
+    await readFile(new URL("../pages-dist/site.webmanifest", import.meta.url), "utf8"),
+  );
+  const source = await readFile(new URL("../app/StudyCoach.tsx", import.meta.url), "utf8");
+
+  assert.equal(manifest.short_name, "Builder Bench");
+  assert.equal(manifest.display, "standalone");
+  assert.equal(manifest.start_url, "./");
+  assert.deepEqual(
+    manifest.icons.map((icon) => icon.sizes),
+    ["192x192", "512x512"],
+  );
+  assert.match(source, /Add to Home Screen/);
+  assert.match(source, /beforeinstallprompt/);
 });
