@@ -2358,5 +2358,197 @@ export const questions: Question[] = [
     explanation:
       "Approval History is its own related list and retains comments and approval or rejection status through the original submission and every resubmission. Setup Audit Trail tracks configuration changes, not record approvals.",
   },
+  {
+    id: "ui-compact-layout-purpose",
+    domain: "User Interface",
+    topic: "Compact layouts",
+    prompt:
+      "Which three places display the fields configured in a compact layout?",
+    options: [
+      "The record highlights panel on the record detail page",
+      "The hover card when a lookup field is hovered over",
+      "The record landing page in the Salesforce mobile app",
+      "The related lists on the record page",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "Compact layouts drive the highlights panel, lookup hover cards, and what shows first on a record in the mobile app. Related lists are governed by the page layout instead.",
+  },
+  {
+    id: "ui-compact-layout-field-types",
+    domain: "User Interface",
+    topic: "Compact layouts",
+    prompt:
+      "Which field types can NOT be added to a compact layout?",
+    options: [
+      "Text Area, Long Text Area, Rich Text Area, and Multi-Select Picklist",
+      "Formula and roll-up summary fields",
+      "Lookup and master-detail fields",
+      "Currency and percent fields",
+    ],
+    answers: [0],
+    explanation:
+      "Compact layouts accept every field type except those four. They are all fields that cannot render usefully in a single compact line, which is a helpful way to remember the list.",
+  },
+  {
+    id: "ui-compact-layout-primary",
+    domain: "User Interface",
+    topic: "Compact layouts",
+    prompt:
+      "A custom compact layout has been created but records still show the old fields. What was missed?",
+    options: [
+      "The custom compact layout must be marked as primary for the object",
+      "The system default compact layout must be deleted",
+      "The compact layout must be added to the page layout",
+      "Field-level security must be updated",
+    ],
+    answers: [0],
+    explanation:
+      "Creating a compact layout does not activate it. Marking it primary makes it the object's default. The system default is read-only and cannot be deleted.",
+  },
+  {
+    id: "ui-record-page-assignment",
+    domain: "User Interface",
+    topic: "Lightning record pages",
+    prompt:
+      "By which four criteria can a Lightning record page be assigned?",
+    options: [
+      "App, profile, record type, and form factor",
+      "App, role, permission set, and device",
+      "Profile, role, territory, and app",
+      "Record type, queue, profile, and locale",
+    ],
+    answers: [0],
+    explanation:
+      "Record page assignment combines app, profile, record type, and form factor. Role, permission set, and queue are never assignment criteria — they are common wrong answers.",
+  },
+  {
+    id: "ui-record-page-layouts",
+    domain: "User Interface",
+    topic: "Lightning record pages",
+    prompt:
+      "Which three layouts can a Lightning record page use?",
+    options: [
+      "Grouped View",
+      "Full View",
+      "Record View, in the Lightning console",
+      "Compact View",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "Grouped View, Full View, and the console-only Record View are the three options. 'Compact View' sounds plausible but belongs to compact layouts, a different feature entirely.",
+  },
+  {
+    id: "ui-home-page-assignment",
+    domain: "User Interface",
+    topic: "Lightning home pages",
+    prompt:
+      "How can a Lightning Home Page be assigned so different teams see different home pages?",
+    options: [
+      "By app, and by app-and-profile combination",
+      "By record type only",
+      "By role hierarchy",
+      "By permission set",
+    ],
+    answers: [0],
+    explanation:
+      "Home pages are assigned per app, or per app and profile together. Note the contrast with record pages, which add record type and form factor — the two assignment models are deliberately different.",
+  },
+  {
+    id: "ui-page-layout-controls",
+    domain: "User Interface",
+    topic: "Page layouts",
+    prompt:
+      "A field created in Schema Builder does not appear on the record page. Why?",
+    options: [
+      "Fields created in Schema Builder must be added to the page layout manually",
+      "Schema Builder fields are not visible until the next release",
+      "Schema Builder cannot create fields, only objects",
+      "The field needs a compact layout assignment",
+    ],
+    answers: [0],
+    explanation:
+      "Schema Builder creates the field but does not place it. This catches people who assume the field wizard behavior — which does offer layout placement — applies there too.",
+  },
+  {
+    id: "ui-related-list-types",
+    domain: "User Interface",
+    topic: "Page layouts",
+    prompt:
+      "Which related list type supports column resizing, row count settings, text wrapping, and mass actions?",
+    options: [
+      "Enhanced List",
+      "Basic List",
+      "Tile",
+      "Compact List",
+    ],
+    answers: [0],
+    explanation:
+      "The three related list types are Basic List, Tile, and Enhanced List. Only Enhanced List adds those extra controls.",
+  },
+  {
+    id: "ui-list-view-charts",
+    domain: "User Interface",
+    topic: "List views",
+    prompt:
+      "Which three chart types are available on a Lightning Experience list view?",
+    options: [
+      "Vertical bar",
+      "Horizontal bar",
+      "Donut",
+      "Line",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "List view charts offer vertical bar, horizontal bar, and donut only. Line and pie are not options, which makes them clean distractors.",
+  },
+  {
+    id: "ui-list-view-default-pin",
+    domain: "User Interface",
+    topic: "List views",
+    prompt:
+      "A user wants a particular list view to open by default every time. What should they do?",
+    options: [
+      "Pin the list view using the pin icon",
+      "Ask an administrator to set it as the org default",
+      "Rename the list view so it sorts first",
+      "Set it as the primary list view in Setup",
+    ],
+    answers: [0],
+    explanation:
+      "Pinning is a per-user setting in Lightning Experience and requires no administrator involvement.",
+  },
+  {
+    id: "ui-recently-viewed-fields",
+    domain: "User Interface",
+    topic: "List views",
+    prompt:
+      "Where are the fields shown in the Recently Viewed list view configured?",
+    options: [
+      "The Search Layouts section for that object",
+      "The list view's own filter settings",
+      "The compact layout",
+      "The page layout",
+    ],
+    answers: [0],
+    explanation:
+      "Recently Viewed is driven by search layouts, not by list view settings — an unintuitive location that makes it very testable.",
+  },
+  {
+    id: "ui-classic-mass-email-list-view",
+    domain: "User Interface",
+    topic: "List views",
+    prompt:
+      "In Salesforce Classic, list views on which objects can be used to build mass email recipient lists?",
+    options: [
+      "Contacts, leads, users, and cases",
+      "Accounts and opportunities",
+      "Any standard or custom object",
+      "Campaigns and campaign members",
+    ],
+    answers: [0],
+    explanation:
+      "Mass email recipient lists come from contact, lead, user, and case list views. Accounts are not on the list, which is the usual trap.",
+  },
 ];
 
