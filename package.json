@@ -8,10 +8,11 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build",
-    "build:pages": "vite build --config vite.pages.config.ts",
+    "build": "node scripts/build-digest.mjs && vinext build",
+    "build:digest": "node scripts/build-digest.mjs",
+    "build:pages": "node scripts/build-digest.mjs && vite build --config vite.pages.config.ts",
     "start": "vinext start",
-    "test": "vinext build && vite build --config vite.pages.config.ts && node --test tests/rendered-html.test.mjs tests/engine.test.mjs",
+    "test": "node scripts/build-digest.mjs && vinext build && vite build --config vite.pages.config.ts && node --test tests/rendered-html.test.mjs tests/engine.test.mjs tests/digest.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {

@@ -2,7 +2,7 @@
 
 :root {
   --ink: #13241f;
-  --muted: #64746e;
+  --muted: #56645e;
   --cream: #f6f3eb;
   --paper: #fffdf8;
   --line: #d9dfd9;
@@ -10,6 +10,7 @@
   --green-dark: #074c38;
   --green-pale: #dcebe3;
   --coral: #e76b4a;
+  --coral-deep: #c2532f;
   --coral-pale: #fff0e9;
   --gold: #d49a24;
   --shadow: 0 20px 60px rgba(23, 53, 43, 0.09);
@@ -116,8 +117,12 @@ a:focus-visible {
 }
 
 .text-button {
+  align-items: center;
   color: var(--muted);
+  display: inline-flex;
   font-size: 13px;
+  min-height: 44px;
+  padding: 8px 4px;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -183,11 +188,13 @@ a:focus-visible {
   transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
 }
 
-.primary-button:hover,
-.secondary-button:hover,
-.copy-button:hover,
-.practice-button:hover {
-  transform: translateY(-1px);
+@media (hover: hover) {
+  .primary-button:hover,
+  .secondary-button:hover,
+  .copy-button:hover,
+  .practice-button:hover {
+    transform: translateY(-1px);
+  }
 }
 
 .primary-button {
@@ -288,7 +295,7 @@ a:focus-visible {
 .readiness-labels {
   color: var(--muted);
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   justify-content: space-between;
   margin-top: 9px;
 }
@@ -390,7 +397,7 @@ a:focus-visible {
   background: transparent;
   border: 1px solid var(--line);
   font-size: 12px;
-  min-height: 36px;
+  min-height: 44px;
   padding: 7px 10px;
 }
 
@@ -441,10 +448,10 @@ a:focus-visible {
 
 .copy-button,
 .publish-button {
-  background: var(--coral);
+  background: var(--coral-deep);
   border: 0;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   min-height: 40px;
   padding: 9px 14px;
   width: 100%;
@@ -477,6 +484,11 @@ a:focus-visible {
   font-size: 10px;
   line-height: 1.5;
   margin-top: 10px;
+}
+
+.hero-copy .handoff-privacy {
+  font-size: 14px;
+  color: var(--muted);
 }
 
 .brief-preview {
@@ -663,7 +675,7 @@ footer a {
 }
 
 .weight-note strong {
-  color: var(--coral);
+  color: var(--coral-deep);
   font-family: Georgia, "Times New Roman", serif;
   font-size: 26px;
 }
@@ -698,16 +710,17 @@ footer a {
 
 .question-card h2 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(27px, 3vw, 38px);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.22;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
   margin: 18px 0 10px;
 }
 
 .selection-hint {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
   margin: 0 0 24px;
 }
 
@@ -718,25 +731,28 @@ footer a {
 
 .answer-option {
   align-items: center;
-  background: white;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 12px;
   cursor: pointer;
   display: grid;
-  font-size: 14px;
+  font-size: 16px;
   gap: 14px;
   grid-template-columns: 34px 1fr auto;
-  line-height: 1.45;
+  line-height: 1.5;
   min-height: 62px;
   padding: 10px 16px;
+  position: relative;
   text-align: left;
   transition: border 150ms ease, background 150ms ease, transform 150ms ease;
   width: 100%;
 }
 
-.answer-option:hover:not(:disabled) {
-  border-color: #86a798;
-  transform: translateY(-1px);
+@media (hover: hover) {
+  .answer-option:hover:not(:disabled) {
+    border-color: #86a798;
+    transform: translateY(-1px);
+  }
 }
 
 .answer-option.is-selected {
@@ -779,7 +795,7 @@ footer a {
 
 .answer-status {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -810,7 +826,7 @@ footer a {
 
 .feedback p {
   color: #45554f;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
   margin: 7px 0 0;
 }
@@ -824,7 +840,7 @@ footer a {
 
 .question-actions > span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 13px;
 }
 
 @media (max-width: 900px) {
@@ -932,7 +948,30 @@ footer a {
   }
 
   .answer-status {
-    grid-column: 2;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+  }
+
+  /* The status badge is out of flow, so it no longer reserves space. Without
+     this, a long first line of option text runs underneath "Correct" /
+     "Your pick" once an answer is revealed. The badge only exists in the
+     revealed state, so :has() scopes the gutter to exactly when it is needed.
+     If :has() is unsupported the layout simply reverts to the overlap risk
+     rather than breaking. */
+  .answer-option:has(.answer-status) {
+    padding-right: 82px;
+  }
+
+  .question-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .question-actions .primary-button {
+    min-height: 52px;
+    width: 100%;
   }
 
   footer {
