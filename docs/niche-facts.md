@@ -3,7 +3,7 @@
 The details that actually separate answers. Written for skimming in short gaps, not for
 reading front to back. Each **Decoy** line is the wrong answer the question will dangle.
 
-Coverage: 15 of roughly 31 course topics, chosen by what the practice exam said you actually
+Coverage: 16 of roughly 31 course topics, chosen by what the practice exam said you actually
 missed rather than by working through the course in order. See "Not yet covered" at the bottom.
 
 ---
@@ -631,6 +631,61 @@ Approval processes live under **Process Automation** in Setup.
 
 ---
 
+## User interface
+
+*Added after the question bank exam: roughly a quarter of its 20 questions were User Interface —
+far more than its 17% weight suggested, and the domain that had been deliberately skipped.*
+
+**Compact layouts** drive three surfaces: the **record highlights panel**, the **lookup hover
+card**, and the **record landing page in the mobile app**. Related lists are *not* one of them —
+that's the page layout.
+
+- A new compact layout does nothing until it is **marked primary**. The system default is
+  read-only and cannot be deleted.
+- **Supports every field type except four: Text Area, Long Text Area, Rich Text Area,
+  Multi-Select Picklist.** All four are things that can't render in one compact line.
+
+**Assignment models differ between page types — this is the pairing to keep straight:**
+
+| Page type | Assigned by |
+| --- | --- |
+| Lightning **Home** Page | app · **app + profile** |
+| Lightning **Record** Page | app · profile · **record type** · **form factor** |
+
+Role, permission set, and queue are *never* assignment criteria for either. They are the
+standard wrong answers.
+
+**Record page layouts — three:** Grouped View · Full View · **Record View** (Lightning console
+only). "Compact View" is not one; that word belongs to compact layouts.
+
+Record pages take three component kinds: **standard, custom, third-party**. The **Accordion**
+component is the vertical equivalent of Classic's Tabs. Templates advertise which **form factors**
+they support (desktop only, or desktop and phone).
+
+**Related list types — three:** Basic List · Tile · **Enhanced List**. Only Enhanced List adds row
+count, column resizing and sorting, text wrapping, and mass actions.
+
+**Page layouts** control fields, sections, buttons, links, actions, and related lists, and are
+associated with **profiles**. Visualforce pages can be embedded in them.
+**Fields created in Schema Builder must be placed on the layout manually** — the field wizard
+offers to do it, Schema Builder does not.
+
+**Mini page layouts** apply to the Agent console mini view, hover details, and event overlays,
+and inherit record type and profile associations, related lists, fields, and field access from
+their parent layout. **Hover details are Salesforce Classic only.**
+
+**List views:**
+
+- Users set their own default by **pinning** — no admin needed.
+- **Chart types are exactly three: vertical bar, horizontal bar, donut.** Not line, not pie.
+- Fields in the **Recently Viewed** list are configured under **Search Layouts**, not in the list
+  view itself. Unintuitive, therefore testable.
+- In Classic, list views on **contacts, leads, users, and cases** can build **mass email**
+  recipient lists. Accounts cannot.
+- Lightning adds inline editing, Kanban and Split views, infinite scrolling, and list view charts.
+
+---
+
 ## Not yet covered
 
 Every cluster the practice exam flagged is now covered. What remains was not implicated by a
@@ -641,7 +696,7 @@ question you actually missed.
 | Business Logic | 28% | 4 of 6 | formula fields · avoiding automation errors |
 | Salesforce Fundamentals | 23% | 6 of 9 | reports · report types · dashboards |
 | Data Modeling | 22% | 3 of 7 | record types · field data type change · schema builder |
-| **User Interface** | 17% | **0 of 5** | all of it — but you scored **90%** here |
+| User Interface | 17% | 1 of 5 | Lightning components (declarative + programmatic) · custom buttons and links |
 | App Deployment | 10% | 3 of 4 | deployment plan |
 
 **Read that User Interface row carefully.** It is the largest untouched block and the second
