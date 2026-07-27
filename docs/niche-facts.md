@@ -3,7 +3,7 @@
 The details that actually separate answers. Written for skimming in short gaps, not for
 reading front to back. Each **Decoy** line is the wrong answer the question will dangle.
 
-Coverage: 14 of roughly 31 course topics, chosen by what the practice exam said you actually
+Coverage: 15 of roughly 31 course topics, chosen by what the practice exam said you actually
 missed rather than by working through the course in order. See "Not yet covered" at the bottom.
 
 ---
@@ -561,6 +561,76 @@ Not all metadata types are supported — unsupported ones must be configured man
 
 ---
 
+## Approval processes
+
+*Added after a live miss in the app — this was the one gap the practice exam hadn't already flagged.*
+
+**Locking, which is where most questions live:**
+
+| Event | Record state |
+| --- | --- |
+| Initial submission | **locked** (default) |
+| Final approval / rejection | your choice — locked or unlocked |
+| **Recall** | **unlocked** (default) |
+
+**Locking is not absolute.** While locked, the **system administrator**, the **assigned approver**,
+and anyone with **Modify All Data** can still edit. The Record Editability setting controls this.
+
+**Four action stages: initial submission · final approval · final rejection · recall.**
+*Recall is the one people forget.*
+
+**Four action types, same at every stage — memorize verbatim:**
+**Create a Task · Email Alert · Field Update · Outbound Message**
+
+Note what's missing: approval processes **cannot create or delete records**. Any option offering
+"Create a Record" or "Call Apex" is wrong.
+
+**Parallel approval has exactly two modes:**
+
+- **Unanimous** — everyone must approve; **one rejection rejects the whole request**
+- **First response** — the first approver to answer decides
+
+There is **no majority option**. That's the standard distractor.
+
+**Approvers can be:** a user or queue the submitter picks · a user, users, related users, or queue
+the admin configures (**up to 25 per step**) · a designated approver such as a manager · a
+**delegated approver**.
+
+- **Manager approval reads the Manager field on the User record** — *not* the role hierarchy.
+  A custom hierarchical field works too.
+- **Dynamic routing**: the approver can be **any related user field** on the object.
+- **A delegated approver can approve or reject but cannot reassign.** Set in Approver Settings on
+  the user record; the step must allow delegates.
+
+**Submission can be triggered by** a Submit for Approval button, a **flow**, or an **Apex trigger**.
+
+**Mobile gotcha:** notifications are **not sent to queues or delegates**. Individual users must be
+assigned to a step for mobile push to reach anyone.
+
+**Building one — the settings that get confused with each other:**
+
+| Setting | Controls |
+| --- | --- |
+| **Entry criteria** | which records may enter the process **at all** |
+| **Step criteria** | whether a record enters **that particular step** |
+| *Not meeting criteria* action | what happens when a step's criteria fail — skip or reject |
+| **Approver Field** | a standard or custom **user field on the record**, or the record owner, used to derive the approver |
+| **Record Editability** | lets the **assigned approver and administrator** edit a locked record |
+| **Approval Request Page Layout** | which fields the approver **sees when deciding** |
+| **Initial Submitters** | who may submit — **users, roles, public group members** (not profiles) |
+
+Entry vs. step criteria is the pairing most worth keeping straight: entry gates the process,
+step gates the step. Conditional routing — skipping director sign-off below a threshold — is
+built with step criteria plus the *not meeting criteria* action, not with entry criteria.
+
+**Approval History** is its own related list, retaining comments and approval or rejection status
+across the original submission and every resubmission. Not the Setup Audit Trail, which tracks
+configuration changes.
+
+Approval processes live under **Process Automation** in Setup.
+
+---
+
 ## Not yet covered
 
 Every cluster the practice exam flagged is now covered. What remains was not implicated by a
@@ -568,7 +638,7 @@ question you actually missed.
 
 | Domain | Weight | Covered | Still open |
 | --- | --- | --- | --- |
-| Business Logic | 28% | 3 of 6 | formula fields · approval processes · avoiding automation errors |
+| Business Logic | 28% | 4 of 6 | formula fields · avoiding automation errors |
 | Salesforce Fundamentals | 23% | 6 of 9 | reports · report types · dashboards |
 | Data Modeling | 22% | 3 of 7 | record types · field data type change · schema builder |
 | **User Interface** | 17% | **0 of 5** | all of it — but you scored **90%** here |

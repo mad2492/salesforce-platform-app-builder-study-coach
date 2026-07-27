@@ -2102,5 +2102,261 @@ export const questions: Question[] = [
     explanation:
       "Validation is a dry run in the target org. It surfaces missing dependencies and version problems before anything is committed, which is why it belongs in every production deployment.",
   },
+  {
+    id: "auto-approval-locking-defaults",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Which two statements describe record locking defaults in an approval process?",
+    options: [
+      "The record is locked by default on initial submission",
+      "The record is unlocked by default when recalled",
+      "The record is unlocked by default on initial submission",
+      "A locked record cannot be edited by anyone until approval completes",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Submission locks, recall unlocks. On final approval or rejection you choose whether to leave it locked. While locked, the system administrator, the assigned approver, and anyone with Modify All Data can still edit it — locking is not absolute.",
+  },
+  {
+    id: "auto-approval-parallel-modes",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "An approval step is assigned to three approvers at once. Which two configurations are available?",
+    options: [
+      "Unanimous — every assigned approver must approve, and a single rejection rejects the request",
+      "First response — the first approver to respond determines the outcome",
+      "Majority — the outcome follows whichever response most approvers give",
+      "Sequential — approvers respond one after another in a fixed order",
+    ],
+    answers: [0, 1],
+    explanation:
+      "Parallel approval offers exactly two modes: unanimous or first response. There is no majority option, which makes it a clean distractor.",
+  },
+  {
+    id: "auto-approval-delegated-limits",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "An approver is on leave and has a delegated approver configured. What can the delegate do?",
+    options: [
+      "Approve or reject the request, but not reassign it",
+      "Approve, reject, or reassign the request",
+      "Only view the request without acting on it",
+      "Reassign the request but not approve or reject it",
+    ],
+    answers: [0],
+    explanation:
+      "A delegated approver receives the same request and can approve or reject it, but cannot reassign. The delegate is set in Approver Settings on the user record, and the approval step must allow delegates.",
+  },
+  {
+    id: "auto-approval-actions-stages",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "At which four stages can approval actions be defined?",
+    options: [
+      "Initial submission, final approval, final rejection, and recall",
+      "Initial submission, escalation, approval, and closure",
+      "Entry, approval, rejection, and archive",
+      "Submission, validation, approval, and deployment",
+    ],
+    answers: [0],
+    explanation:
+      "Recall is the stage most often forgotten. At every one of the four, the available actions are the same: Create a Task, Email Alert, Field Update, and Outbound Message.",
+  },
+  {
+    id: "auto-approval-action-types",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Which four action types can an approval process perform?",
+    options: [
+      "Create a Task, Email Alert, Field Update, and Outbound Message",
+      "Create a Record, Send Email, Post to Chatter, and Call Apex",
+      "Field Update, Screen Flow, Email Alert, and Platform Event",
+      "Email Alert, Field Update, Delete Record, and Outbound Message",
+    ],
+    answers: [0],
+    explanation:
+      "This is a fixed set worth memorizing verbatim. Note what is absent: approval processes cannot create records or delete them, which is a common wrong answer.",
+  },
+  {
+    id: "auto-approval-approver-limit",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "How many approvers can an administrator assign to a single approval step?",
+    options: [
+      "Up to 25",
+      "Up to 10",
+      "Up to 5",
+      "Unlimited",
+    ],
+    answers: [0],
+    explanation:
+      "An admin-configured step supports up to 25 users. Approvers can also be a queue, a manually chosen user, a designated approver such as a manager, or a delegated approver.",
+  },
+  {
+    id: "auto-approval-manager-field",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Approval requests must route to each submitter's manager. What supports this?",
+    options: [
+      "The standard Manager field on the user record, or a custom hierarchical relationship",
+      "The role hierarchy",
+      "A public group containing all managers",
+      "An assignment rule on the object",
+    ],
+    answers: [0],
+    explanation:
+      "Manager approval reads the hierarchical Manager field on the User record — not the role hierarchy, which is the natural-sounding wrong answer. A custom hierarchical field works too.",
+  },
+  {
+    id: "auto-approval-related-user-routing",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Approval requests must go to a user stored in a lookup field on the record being submitted. Is this possible?",
+    options: [
+      "Yes — the approver can be based on any related user field on the object",
+      "No — approvers must be a fixed user, queue, or manager",
+      "Only if that user is also the record owner",
+      "Only through an Apex trigger",
+    ],
+    answers: [0],
+    explanation:
+      "Dynamic routing off a related user field is supported and is how per-record approver assignment is done declaratively.",
+  },
+  {
+    id: "auto-approval-triggers",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Which three can start an approval process?",
+    options: [
+      "A Submit for Approval button on the record",
+      "A flow built in Flow Builder",
+      "An Apex trigger",
+      "A validation rule",
+    ],
+    answers: [0, 1, 2],
+    explanation:
+      "Submission can be manual or automated through Flow or Apex. Validation rules only block saves; they cannot submit anything.",
+  },
+  {
+    id: "auto-approval-mobile-notifications",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "An approval step assigns requests to a queue, and approvers report receiving no mobile notification. Why?",
+    options: [
+      "Salesforce mobile app notifications are not sent to queues or delegates; individual users must be added",
+      "Approval processes are not supported in the Salesforce mobile app",
+      "Mobile notifications require the record to be unlocked",
+      "Queues cannot be used as approvers at all",
+    ],
+    answers: [0],
+    explanation:
+      "Queues and delegates are valid approvers but do not receive mobile push notifications. For a step to notify on mobile, individual users have to be assigned.",
+  },
+  {
+    id: "auto-approval-entry-criteria",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Only opportunities above $50,000 should be eligible for an approval process. Where is that defined?",
+    options: [
+      "The entry criteria on the approval process",
+      "The step criteria on the first approval step",
+      "A validation rule on Opportunity",
+      "The approval request page layout",
+    ],
+    answers: [0],
+    explanation:
+      "Entry criteria decide which records may enter the process at all. Step criteria are a separate, later filter deciding whether a record enters a particular step once it is already in the process.",
+  },
+  {
+    id: "auto-approval-step-criteria",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "A record enters an approval process but does not meet the criteria for step two. What controls the outcome?",
+    options: [
+      "The 'not meeting criteria' action configured on that step",
+      "The entry criteria, which re-evaluates at each step",
+      "The record is automatically rejected",
+      "The record is returned to the submitter",
+    ],
+    answers: [0],
+    explanation:
+      "Each step defines what happens when its criteria are not met — typically skip to the next step or reject. This is how conditional routing is built, for example skipping director approval below a threshold.",
+  },
+  {
+    id: "auto-approval-record-editability",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "An approver needs to correct a field on a record that is locked pending approval. What makes this possible?",
+    options: [
+      "The Record Editability setting, which lets the assigned approver and the administrator edit a locked record",
+      "Removing the lock action from the initial submission",
+      "Granting the approver Modify All Data",
+      "Recalling and resubmitting the record",
+    ],
+    answers: [0],
+    explanation:
+      "Record Editability is set when creating the approval process and is the intended mechanism. Granting Modify All Data would also work but is wildly disproportionate — that pairing makes it a good distractor.",
+  },
+  {
+    id: "auto-approval-initial-submitters",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Which can be designated as initial submitters on an approval process?",
+    options: [
+      "Users, roles, and members of public groups",
+      "Users only",
+      "Profiles and permission sets",
+      "Any user with read access to the record",
+    ],
+    answers: [0],
+    explanation:
+      "Initial Submitters controls who may submit a record for approval and accepts users, roles, and public group members. Profiles and permission sets are not options here.",
+  },
+  {
+    id: "auto-approval-approver-field",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "When creating an approval process, what does the Approver Field setting specify?",
+    options: [
+      "A standard or custom user field on the record, or the record owner, used to determine the approver",
+      "The email address approval notifications are sent from",
+      "The field updated when the record is approved",
+      "Which fields appear on the approval request page",
+    ],
+    answers: [0],
+    explanation:
+      "The Approver Field is how the process derives an approver from the record itself. The approval request page layout is a separate setting controlling which fields the approver sees when deciding.",
+  },
+  {
+    id: "auto-approval-history",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Where can the full audit trail of an approval, including comments across multiple resubmissions, be seen?",
+    options: [
+      "The Approval History related list on the record",
+      "The Setup Audit Trail",
+      "The record's Chatter feed",
+      "The field history tracking related list",
+    ],
+    answers: [0],
+    explanation:
+      "Approval History is its own related list and retains comments and approval or rejection status through the original submission and every resubmission. Setup Audit Trail tracks configuration changes, not record approvals.",
+  },
 ];
 
