@@ -5,6 +5,10 @@
    literal color: if a new one is needed, add a token instead. That is what
    makes a second palette possible without touching a single selector. */
 :root {
+  /* Lets the browser paint form controls, scrollbars and the textarea caret
+     to match the active palette. Under a light OS this still renders light. */
+  color-scheme: light dark;
+
   /* Surfaces */
   --bg-base: #f6f3eb;
   --surface-raised: #fffdf8;
@@ -70,6 +74,88 @@
   --overlay-scrim: rgba(7, 26, 20, 0.58);
   --shadow: 0 20px 60px rgba(23, 53, 43, 0.09);
   --shadow-dialog: 0 30px 80px rgba(7, 26, 20, 0.28);
+}
+
+/* Night palette. This overrides values only — every selector below is shared
+   with the light theme, which is the whole point of the tokenization above.
+   If something reads wrong here, the fix is a missing token, not a rule.
+
+   Read in a dark room, so peak luminance is deliberately held down: the
+   background is not black and the text is not white. The anchors match
+   public/digest.html so the two pages feel like one product at night. The
+   character is meant to survive the inversion — still warm cream type, still
+   deep green, just lit from a lower level. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Surfaces */
+    --bg-base: #14181a;
+    --surface-raised: #1b2124;
+    --surface-raised-translucent: rgba(27, 33, 36, 0.94);
+    --surface-subtle: #232a2d;
+    --surface-inset: #262d30;
+    --surface-input: #232b2e;
+    --surface-inverse: #1e2a24;
+    --brand-mark-bg: #167a58;
+    --glow-warm: rgba(232, 160, 122, 0.06);
+    --glow-cool: rgba(23, 128, 92, 0.08);
+
+    /* Text */
+    --text-primary: #e6e1d8;
+    --text-muted: #a9b3ad;
+    --text-on-accent: #f2f6f3;
+    --text-on-warn: #17100c;
+    --text-on-accent-pale: #c4d0c9;
+    --feedback-text: #cdd6d1;
+
+    /* Text sitting on --surface-inverse */
+    --text-on-inverse: #e6e1d8;
+    --brand-mark-text: #f2f6f3;
+    --text-muted-on-inverse: #b3bdb7;
+    --text-soft-on-inverse: #97a19b;
+    --text-faint-on-inverse: #8a948f;
+
+    /* Accents. --accent fills and --accent-text labels split here: a fill dark
+       enough to carry pale text cannot also be a legible 12px link on the page
+       background, so each takes the luminance its own job needs. */
+    --accent: #167a58;
+    --accent-hover: #1f9c70;
+    --accent-text: #9ecfb4;
+    --accent-pale: #1d2b25;
+    --accent-on-inverse: #9ecfb4;
+    --accent-highlight: #e0b45a;
+    --warn: #c96343;
+    --warn-fill: #b8512d;
+    --warn-text: #e8a07a;
+    --warn-pale: #2e211c;
+
+    /* Borders */
+    --border-subtle: #3a4441;
+    --border-interactive: #636e6a;
+    --border-strong: #636e6a;
+    --border-hover: #6f9d86;
+    --border-muted: #2c3437;
+    --border-card: rgba(110, 122, 117, 0.55);
+    --border-accent-pale: #33513f;
+    --border-on-inverse: #66766e;
+    --border-subtle-on-inverse: #2b3733;
+    --border-correct: #4c8f6d;
+    --border-incorrect: #b0664a;
+
+    /* Answer + feedback states. Correct still reads green and incorrect still
+       reads warm coral, at luminances that belong in a dark room. */
+    --answer-selected-bg: #18231f;
+    --feedback-correct-bg: #16241d;
+
+    /* Progress meters */
+    --progress-track: #2a3335;
+    --progress-fill: #2fa87b;
+
+    /* Effects */
+    --focus-ring: rgba(232, 160, 122, 0.75);
+    --overlay-scrim: rgba(6, 10, 12, 0.74);
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    --shadow-dialog: 0 30px 80px rgba(0, 0, 0, 0.62);
+  }
 }
 
 * {
