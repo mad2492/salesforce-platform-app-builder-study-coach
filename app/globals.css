@@ -953,6 +953,16 @@ footer a {
     top: 8px;
   }
 
+  /* The status badge is out of flow, so it no longer reserves space. Without
+     this, a long first line of option text runs underneath "Correct" /
+     "Your pick" once an answer is revealed. The badge only exists in the
+     revealed state, so :has() scopes the gutter to exactly when it is needed.
+     If :has() is unsupported the layout simply reverts to the overlap risk
+     rather than breaking. */
+  .answer-option:has(.answer-status) {
+    padding-right: 82px;
+  }
+
   .question-actions {
     align-items: stretch;
     flex-direction: column-reverse;
