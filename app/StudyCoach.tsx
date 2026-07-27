@@ -628,6 +628,9 @@ export default function StudyCoach() {
             </button>
           </div>
           <div className="hero-actions">
+            <a className="text-button" href="digest.html">
+              Read the digest
+            </a>
             <button className="text-button" onClick={startDiagnostic}>
               Exam-pace check ↗
             </button>
