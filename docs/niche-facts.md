@@ -607,7 +607,27 @@ the admin configures (**up to 25 per step**) · a designated approver such as a 
 **Mobile gotcha:** notifications are **not sent to queues or delegates**. Individual users must be
 assigned to a step for mobile push to reach anyone.
 
-Approval history lives on its own related list, tracking comments and status across resubmissions.
+**Building one — the settings that get confused with each other:**
+
+| Setting | Controls |
+| --- | --- |
+| **Entry criteria** | which records may enter the process **at all** |
+| **Step criteria** | whether a record enters **that particular step** |
+| *Not meeting criteria* action | what happens when a step's criteria fail — skip or reject |
+| **Approver Field** | a standard or custom **user field on the record**, or the record owner, used to derive the approver |
+| **Record Editability** | lets the **assigned approver and administrator** edit a locked record |
+| **Approval Request Page Layout** | which fields the approver **sees when deciding** |
+| **Initial Submitters** | who may submit — **users, roles, public group members** (not profiles) |
+
+Entry vs. step criteria is the pairing most worth keeping straight: entry gates the process,
+step gates the step. Conditional routing — skipping director sign-off below a threshold — is
+built with step criteria plus the *not meeting criteria* action, not with entry criteria.
+
+**Approval History** is its own related list, retaining comments and approval or rejection status
+across the original submission and every resubmission. Not the Setup Audit Trail, which tracks
+configuration changes.
+
+Approval processes live under **Process Automation** in Setup.
 
 ---
 

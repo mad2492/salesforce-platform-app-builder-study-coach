@@ -2262,5 +2262,101 @@ export const questions: Question[] = [
     explanation:
       "Queues and delegates are valid approvers but do not receive mobile push notifications. For a step to notify on mobile, individual users have to be assigned.",
   },
+  {
+    id: "auto-approval-entry-criteria",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Only opportunities above $50,000 should be eligible for an approval process. Where is that defined?",
+    options: [
+      "The entry criteria on the approval process",
+      "The step criteria on the first approval step",
+      "A validation rule on Opportunity",
+      "The approval request page layout",
+    ],
+    answers: [0],
+    explanation:
+      "Entry criteria decide which records may enter the process at all. Step criteria are a separate, later filter deciding whether a record enters a particular step once it is already in the process.",
+  },
+  {
+    id: "auto-approval-step-criteria",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "A record enters an approval process but does not meet the criteria for step two. What controls the outcome?",
+    options: [
+      "The 'not meeting criteria' action configured on that step",
+      "The entry criteria, which re-evaluates at each step",
+      "The record is automatically rejected",
+      "The record is returned to the submitter",
+    ],
+    answers: [0],
+    explanation:
+      "Each step defines what happens when its criteria are not met — typically skip to the next step or reject. This is how conditional routing is built, for example skipping director approval below a threshold.",
+  },
+  {
+    id: "auto-approval-record-editability",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "An approver needs to correct a field on a record that is locked pending approval. What makes this possible?",
+    options: [
+      "The Record Editability setting, which lets the assigned approver and the administrator edit a locked record",
+      "Removing the lock action from the initial submission",
+      "Granting the approver Modify All Data",
+      "Recalling and resubmitting the record",
+    ],
+    answers: [0],
+    explanation:
+      "Record Editability is set when creating the approval process and is the intended mechanism. Granting Modify All Data would also work but is wildly disproportionate — that pairing makes it a good distractor.",
+  },
+  {
+    id: "auto-approval-initial-submitters",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Which can be designated as initial submitters on an approval process?",
+    options: [
+      "Users, roles, and members of public groups",
+      "Users only",
+      "Profiles and permission sets",
+      "Any user with read access to the record",
+    ],
+    answers: [0],
+    explanation:
+      "Initial Submitters controls who may submit a record for approval and accepts users, roles, and public group members. Profiles and permission sets are not options here.",
+  },
+  {
+    id: "auto-approval-approver-field",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "When creating an approval process, what does the Approver Field setting specify?",
+    options: [
+      "A standard or custom user field on the record, or the record owner, used to determine the approver",
+      "The email address approval notifications are sent from",
+      "The field updated when the record is approved",
+      "Which fields appear on the approval request page",
+    ],
+    answers: [0],
+    explanation:
+      "The Approver Field is how the process derives an approver from the record itself. The approval request page layout is a separate setting controlling which fields the approver sees when deciding.",
+  },
+  {
+    id: "auto-approval-history",
+    domain: "Business Logic and Process Automation",
+    topic: "Approval processes",
+    prompt:
+      "Where can the full audit trail of an approval, including comments across multiple resubmissions, be seen?",
+    options: [
+      "The Approval History related list on the record",
+      "The Setup Audit Trail",
+      "The record's Chatter feed",
+      "The field history tracking related list",
+    ],
+    answers: [0],
+    explanation:
+      "Approval History is its own related list and retains comments and approval or rejection status through the original submission and every resubmission. Setup Audit Trail tracks configuration changes, not record approvals.",
+  },
 ];
 
