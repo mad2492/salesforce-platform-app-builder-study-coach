@@ -13,6 +13,7 @@
   --surface-inset: #edf0ed;
   --surface-input: #f7faf8;
   --surface-inverse: #13241f;
+  --brand-mark-bg: #13241f;
   --glow-warm: rgba(231, 107, 74, 0.11);
   --glow-cool: rgba(13, 104, 77, 0.08);
 
@@ -26,6 +27,7 @@
 
   /* Text sitting on --surface-inverse */
   --text-on-inverse: #ffffff;
+  --brand-mark-text: #ffffff;
   --text-muted-on-inverse: #bdcbc5;
   --text-soft-on-inverse: #aebdb7;
   --text-faint-on-inverse: #8fa099;
@@ -151,9 +153,9 @@ a:focus-visible {
 
 .brand-mark {
   align-items: center;
-  background: var(--surface-inverse);
+  background: var(--brand-mark-bg);
   border-radius: 10px 10px 10px 3px;
-  color: var(--text-on-inverse);
+  color: var(--brand-mark-text);
   display: inline-flex;
   font-size: 12px;
   font-weight: 800;
