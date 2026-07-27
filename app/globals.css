@@ -1,19 +1,73 @@
 @import "tailwindcss";
 
+/* Every color in this stylesheet lives here, named by the ROLE it plays rather
+   than by what it looks like. A rule anywhere below should never contain a
+   literal color: if a new one is needed, add a token instead. That is what
+   makes a second palette possible without touching a single selector. */
 :root {
-  --ink: #13241f;
-  --muted: #56645e;
-  --cream: #f6f3eb;
-  --paper: #fffdf8;
-  --line: #d9dfd9;
-  --green: #0d684d;
-  --green-dark: #074c38;
-  --green-pale: #dcebe3;
-  --coral: #e76b4a;
-  --coral-deep: #c2532f;
-  --coral-pale: #fff0e9;
-  --gold: #d49a24;
+  /* Surfaces */
+  --bg-base: #f6f3eb;
+  --surface-raised: #fffdf8;
+  --surface-raised-translucent: rgba(255, 253, 248, 0.94);
+  --surface-subtle: #f6f3eb;
+  --surface-inset: #edf0ed;
+  --surface-input: #f7faf8;
+  --surface-inverse: #13241f;
+  --glow-warm: rgba(231, 107, 74, 0.11);
+  --glow-cool: rgba(13, 104, 77, 0.08);
+
+  /* Text */
+  --text-primary: #13241f;
+  --text-muted: #56645e;
+  --text-on-accent: #ffffff;
+  --text-on-warn: #ffffff;
+  --text-on-accent-pale: #43574f;
+  --feedback-text: #45554f;
+
+  /* Text sitting on --surface-inverse */
+  --text-on-inverse: #ffffff;
+  --text-muted-on-inverse: #bdcbc5;
+  --text-soft-on-inverse: #aebdb7;
+  --text-faint-on-inverse: #8fa099;
+
+  /* Accents */
+  --accent: #0d684d;
+  --accent-hover: #074c38;
+  --accent-text: #0d684d;
+  --accent-pale: #dcebe3;
+  --accent-on-inverse: #97d2ba;
+  --accent-highlight: #d49a24;
+  --warn: #e76b4a;
+  --warn-fill: #c2532f;
+  --warn-text: #c2532f;
+  --warn-pale: #fff0e9;
+
+  /* Borders */
+  --border-subtle: #d9dfd9;
+  --border-interactive: #d9dfd9;
+  --border-strong: #aebbb4;
+  --border-hover: #86a798;
+  --border-muted: #cfd7d1;
+  --border-card: rgba(183, 196, 188, 0.72);
+  --border-accent-pale: #b8d4c6;
+  --border-on-inverse: #6b7e76;
+  --border-subtle-on-inverse: #43564e;
+  --border-correct: #61a085;
+  --border-incorrect: #e38c73;
+
+  /* Answer + feedback states */
+  --answer-selected-bg: #f0f7f3;
+  --feedback-correct-bg: #edf7f1;
+
+  /* Progress meters */
+  --progress-track: #dde3de;
+  --progress-fill: #0d684d;
+
+  /* Effects */
+  --focus-ring: rgba(231, 107, 74, 0.55);
+  --overlay-scrim: rgba(7, 26, 20, 0.58);
   --shadow: 0 20px 60px rgba(23, 53, 43, 0.09);
+  --shadow-dialog: 0 30px 80px rgba(7, 26, 20, 0.28);
 }
 
 * {
@@ -21,17 +75,17 @@
 }
 
 html {
-  background: var(--cream);
+  background: var(--bg-base);
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 85% 5%, rgba(231, 107, 74, 0.11), transparent 26rem),
-    radial-gradient(circle at 5% 40%, rgba(13, 104, 77, 0.08), transparent 24rem),
-    var(--cream);
-  color: var(--ink);
+    radial-gradient(circle at 85% 5%, var(--glow-warm), transparent 26rem),
+    radial-gradient(circle at 5% 40%, var(--glow-cool), transparent 24rem),
+    var(--bg-base);
+  color: var(--text-primary);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   min-height: 100vh;
 }
@@ -47,7 +101,7 @@ button {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgba(231, 107, 74, 0.55);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -62,7 +116,7 @@ a:focus-visible {
   display: grid;
   min-height: 100vh;
   place-items: center;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .site-header,
@@ -91,15 +145,15 @@ a:focus-visible {
 }
 
 .brand-lockup span:last-child {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 12px;
 }
 
 .brand-mark {
   align-items: center;
-  background: var(--ink);
+  background: var(--surface-inverse);
   border-radius: 10px 10px 10px 3px;
-  color: white;
+  color: var(--text-on-inverse);
   display: inline-flex;
   font-size: 12px;
   font-weight: 800;
@@ -118,7 +172,7 @@ a:focus-visible {
 
 .text-button {
   align-items: center;
-  color: var(--muted);
+  color: var(--text-muted);
   display: inline-flex;
   font-size: 13px;
   min-height: 44px;
@@ -146,7 +200,7 @@ a:focus-visible {
 }
 
 .eyebrow {
-  color: var(--green);
+  color: var(--accent-text);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -164,7 +218,7 @@ a:focus-visible {
 }
 
 .hero-copy > p {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 18px;
   line-height: 1.65;
   margin: 0;
@@ -198,15 +252,15 @@ a:focus-visible {
 }
 
 .primary-button {
-  background: var(--green);
-  border: 1px solid var(--green);
-  color: white;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: var(--text-on-accent);
   min-height: 48px;
   padding: 12px 20px;
 }
 
 .primary-button:hover {
-  background: var(--green-dark);
+  background: var(--accent-hover);
 }
 
 .primary-button:disabled {
@@ -217,20 +271,20 @@ a:focus-visible {
 
 .secondary-button {
   background: transparent;
-  border: 1px solid #aebbb4;
+  border: 1px solid var(--border-strong);
   min-height: 48px;
   padding: 12px 20px;
 }
 
 .secondary-button:hover {
-  border-color: var(--green);
+  border-color: var(--accent);
 }
 
 .score-card,
 .panel,
 .question-card {
-  background: rgba(255, 253, 248, 0.94);
-  border: 1px solid rgba(183, 196, 188, 0.72);
+  background: var(--surface-raised-translucent);
+  border: 1px solid var(--border-card);
   box-shadow: var(--shadow);
 }
 
@@ -241,7 +295,7 @@ a:focus-visible {
 }
 
 .score-label {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 12px;
   font-weight: 750;
   letter-spacing: 0.08em;
@@ -257,7 +311,7 @@ a:focus-visible {
 }
 
 .score-card p {
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1.5;
   margin: 0 0 24px;
 }
@@ -265,7 +319,7 @@ a:focus-visible {
 .readiness-rule,
 .mini-track,
 .progress-track {
-  background: #dde3de;
+  background: var(--progress-track);
   overflow: hidden;
   position: relative;
 }
@@ -278,14 +332,14 @@ a:focus-visible {
 .readiness-rule span,
 .mini-track span,
 .progress-track span {
-  background: var(--green);
+  background: var(--progress-fill);
   display: block;
   height: 100%;
   transition: width 400ms ease;
 }
 
 .readiness-rule i {
-  background: var(--coral);
+  background: var(--warn);
   height: 16px;
   position: absolute;
   top: -4px;
@@ -293,7 +347,7 @@ a:focus-visible {
 }
 
 .readiness-labels {
-  color: var(--muted);
+  color: var(--text-muted);
   display: flex;
   font-size: 12px;
   justify-content: space-between;
@@ -302,8 +356,8 @@ a:focus-visible {
 
 .result-banner {
   align-items: center;
-  background: var(--green-pale);
-  border: 1px solid #b8d4c6;
+  background: var(--accent-pale);
+  border: 1px solid var(--border-accent-pale);
   border-radius: 16px;
   display: flex;
   gap: 24px;
@@ -320,7 +374,7 @@ a:focus-visible {
 }
 
 .result-banner p {
-  color: #43574f;
+  color: var(--text-on-accent-pale);
   margin: 0;
 }
 
@@ -351,17 +405,17 @@ a:focus-visible {
 }
 
 .session-count {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 12px;
 }
 
 .domain-list {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .domain-row {
   align-items: center;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border-subtle);
   display: grid;
   gap: 16px;
   grid-template-columns: minmax(150px, 1.1fr) minmax(100px, 1fr) 82px 76px;
@@ -380,7 +434,7 @@ a:focus-visible {
 
 .domain-title span,
 .domain-score span {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 11px;
 }
 
@@ -395,34 +449,34 @@ a:focus-visible {
 
 .practice-button {
   background: transparent;
-  border: 1px solid var(--line);
+  border: 1px solid var(--border-interactive);
   font-size: 12px;
   min-height: 44px;
   padding: 7px 10px;
 }
 
 .practice-button:hover {
-  border-color: var(--green);
+  border-color: var(--accent);
 }
 
 .coach-panel {
-  background: var(--ink);
-  color: white;
+  background: var(--surface-inverse);
+  color: var(--text-on-inverse);
 }
 
 .coach-panel .eyebrow {
-  color: #97d2ba;
+  color: var(--accent-on-inverse);
 }
 
 .coach-panel > p {
-  color: #bdcbc5;
+  color: var(--text-muted-on-inverse);
   line-height: 1.65;
   margin: 18px 0 24px;
 }
 
 .coach-panel .secondary-button {
-  border-color: #6b7e76;
-  color: white;
+  border-color: var(--border-on-inverse);
+  color: var(--text-on-inverse);
 }
 
 .full-button {
@@ -430,7 +484,7 @@ a:focus-visible {
 }
 
 .handoff-box {
-  border-top: 1px solid #43564e;
+  border-top: 1px solid var(--border-subtle-on-inverse);
   margin-top: 28px;
   padding-top: 24px;
 }
@@ -440,7 +494,7 @@ a:focus-visible {
 }
 
 .handoff-box p {
-  color: #aebdb7;
+  color: var(--text-soft-on-inverse);
   font-size: 12px;
   line-height: 1.55;
   margin: 8px 0 14px;
@@ -448,9 +502,9 @@ a:focus-visible {
 
 .copy-button,
 .publish-button {
-  background: var(--coral-deep);
+  background: var(--warn-fill);
   border: 0;
-  color: white;
+  color: var(--text-on-accent);
   font-size: 13px;
   min-height: 40px;
   padding: 9px 14px;
@@ -464,11 +518,11 @@ a:focus-visible {
 
 .publish-button {
   background: transparent;
-  border: 1px solid #6b7e76;
+  border: 1px solid var(--border-on-inverse);
 }
 
 .publish-button:hover {
-  border-color: #97d2ba;
+  border-color: var(--accent-on-inverse);
 }
 
 .copy-button:disabled,
@@ -479,7 +533,7 @@ a:focus-visible {
 }
 
 .handoff-privacy {
-  color: #8fa099;
+  color: var(--text-faint-on-inverse);
   display: block;
   font-size: 10px;
   line-height: 1.5;
@@ -488,14 +542,14 @@ a:focus-visible {
 
 .hero-copy .handoff-privacy {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .brief-preview {
-  background: #f7faf8;
-  border: 1px solid #6b7e76;
+  background: var(--surface-input);
+  border: 1px solid var(--border-on-inverse);
   border-radius: 8px;
-  color: var(--ink);
+  color: var(--text-primary);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 11px;
   line-height: 1.45;
@@ -507,7 +561,7 @@ a:focus-visible {
 }
 
 footer {
-  color: var(--muted);
+  color: var(--text-muted);
   display: flex;
   font-size: 12px;
   justify-content: space-between;
@@ -515,7 +569,7 @@ footer {
 }
 
 footer a {
-  color: var(--green);
+  color: var(--accent-text);
   font-weight: 700;
   text-decoration: none;
 }
@@ -529,7 +583,7 @@ footer a {
 .install-button {
   background: transparent;
   border: 0;
-  color: var(--green);
+  color: var(--accent-text);
   cursor: pointer;
   font-size: 12px;
   font-weight: 800;
@@ -540,7 +594,7 @@ footer a {
 
 .install-overlay {
   align-items: flex-end;
-  background: rgba(7, 26, 20, 0.58);
+  background: var(--overlay-scrim);
   display: flex;
   inset: 0;
   justify-content: center;
@@ -550,10 +604,10 @@ footer a {
 }
 
 .install-dialog {
-  background: var(--paper);
-  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
   border-radius: 22px;
-  box-shadow: 0 30px 80px rgba(7, 26, 20, 0.28);
+  box-shadow: var(--shadow-dialog);
   max-width: 580px;
   padding: 28px;
   position: relative;
@@ -576,7 +630,7 @@ footer a {
 
 .install-close {
   align-items: center;
-  background: var(--cream);
+  background: var(--surface-subtle);
   border: 0;
   border-radius: 999px;
   cursor: pointer;
@@ -597,7 +651,7 @@ footer a {
 }
 
 .install-steps > div {
-  background: var(--cream);
+  background: var(--surface-subtle);
   border-radius: 12px;
   padding: 16px;
 }
@@ -608,7 +662,7 @@ footer a {
 
 .install-steps p,
 .install-note {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 13px;
   line-height: 1.55;
 }
@@ -626,7 +680,7 @@ footer a {
 }
 
 .question-count {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 13px;
 }
 
@@ -660,14 +714,14 @@ footer a {
 }
 
 .question-context > p {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 14px;
   margin: 0;
 }
 
 .weight-note {
   align-items: center;
-  border-top: 1px solid #cfd7d1;
+  border-top: 1px solid var(--border-muted);
   display: flex;
   gap: 12px;
   margin-top: 28px;
@@ -675,13 +729,13 @@ footer a {
 }
 
 .weight-note strong {
-  color: var(--coral-deep);
+  color: var(--warn-text);
   font-family: Georgia, "Times New Roman", serif;
   font-size: 26px;
 }
 
 .weight-note span {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 11px;
   line-height: 1.3;
   max-width: 110px;
@@ -694,7 +748,7 @@ footer a {
 
 .question-heading {
   align-items: center;
-  color: var(--muted);
+  color: var(--text-muted);
   display: flex;
   font-size: 12px;
   font-weight: 700;
@@ -702,7 +756,7 @@ footer a {
 }
 
 .domain-dot {
-  background: var(--coral);
+  background: var(--warn);
   border-radius: 50%;
   height: 8px;
   width: 8px;
@@ -718,7 +772,7 @@ footer a {
 }
 
 .selection-hint {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 24px;
@@ -731,8 +785,8 @@ footer a {
 
 .answer-option {
   align-items: center;
-  background: var(--paper);
-  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-interactive);
   border-radius: 12px;
   cursor: pointer;
   display: grid;
@@ -750,29 +804,29 @@ footer a {
 
 @media (hover: hover) {
   .answer-option:hover:not(:disabled) {
-    border-color: #86a798;
+    border-color: var(--border-hover);
     transform: translateY(-1px);
   }
 }
 
 .answer-option.is-selected {
-  background: #f0f7f3;
-  border-color: var(--green);
+  background: var(--answer-selected-bg);
+  border-color: var(--accent);
 }
 
 .answer-option.is-correct {
-  background: #edf7f1;
-  border-color: #61a085;
+  background: var(--feedback-correct-bg);
+  border-color: var(--border-correct);
 }
 
 .answer-option.is-wrong {
-  background: var(--coral-pale);
-  border-color: #e38c73;
+  background: var(--warn-pale);
+  border-color: var(--border-incorrect);
 }
 
 .option-letter {
   align-items: center;
-  background: #edf0ed;
+  background: var(--surface-inset);
   border-radius: 8px;
   display: inline-flex;
   font-size: 12px;
@@ -784,17 +838,17 @@ footer a {
 
 .is-selected .option-letter,
 .is-correct .option-letter {
-  background: var(--green);
-  color: white;
+  background: var(--accent);
+  color: var(--text-on-accent);
 }
 
 .is-wrong .option-letter {
-  background: var(--coral);
-  color: white;
+  background: var(--warn);
+  color: var(--text-on-warn);
 }
 
 .answer-status {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -808,13 +862,13 @@ footer a {
 }
 
 .feedback-correct {
-  background: #edf7f1;
-  border-color: var(--green);
+  background: var(--feedback-correct-bg);
+  border-color: var(--accent);
 }
 
 .feedback-review {
-  background: var(--coral-pale);
-  border-color: var(--coral);
+  background: var(--warn-pale);
+  border-color: var(--warn);
 }
 
 .feedback-label {
@@ -825,7 +879,7 @@ footer a {
 }
 
 .feedback p {
-  color: #45554f;
+  color: var(--feedback-text);
   font-size: 16px;
   line-height: 1.6;
   margin: 7px 0 0;
@@ -839,7 +893,7 @@ footer a {
 }
 
 .question-actions > span {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 13px;
 }
 
