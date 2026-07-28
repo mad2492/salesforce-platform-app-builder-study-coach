@@ -37,7 +37,10 @@
     }
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
   body {
     margin: 0;
     background: var(--bg);
@@ -75,9 +78,7 @@
     font-family: var(--display);
     font-size: clamp(23px, 5.5vw, 28px);
     line-height: 1.25;
-    margin: 44px 0 12px;
-    padding-top: 20px;
-    border-top: 1px solid var(--rule);
+    margin: 0 0 16px;
     letter-spacing: -0.005em;
   }
   h3 { font-size: 18px; margin: 28px 0 8px; }
@@ -85,7 +86,84 @@
   strong { font-weight: 650; color: var(--ink); }
   em { color: var(--ink-soft); }
   a { color: var(--accent); }
-  hr { display: none; } /* h2 borders already separate sections */
+  hr { display: none; } /* sections separate themselves */
+  .lede { font-size: 1.03em; }
+
+  /* Contents. Fifteen sections is too many to find by scrolling, so the index
+     is the first thing on the page and every section links back to it. */
+  .toc {
+    margin: 28px 0 40px;
+    padding: 18px 20px 8px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    scroll-margin-top: 16px;
+  }
+  .toc-heading {
+    font-family: var(--reading);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; counter-reset: none; }
+  .toc li { margin: 0; border-top: 1px solid var(--rule); }
+  .toc li:first-child { border-top: none; }
+  .toc a {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding: 11px 0; /* ~44px tap target */
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  .toc a:hover .toc-title { text-decoration: underline; }
+  .toc-number {
+    flex: 0 0 1.4em;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* One card per topic: a visible boundary is easier to parse than a rule. */
+  .topic {
+    margin: 0 0 20px;
+    padding: 24px 20px 8px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+  }
+  /* The id sits on the heading, so the offset has to clear the card's own
+     top padding — otherwise a jump crops the card edge. */
+  .topic h2 { scroll-margin-top: 36px; }
+  .to-contents {
+    display: inline-block;
+    margin: 4px 0 16px;
+    padding: 8px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .to-contents:hover { color: var(--accent); }
+
+  /* An italic line under a heading is an editorial note about why the section
+     exists — useful, but not what you came to memorize. */
+  .note {
+    margin: 0 0 20px;
+    padding: 10px 0 10px 14px;
+    border-left: 3px solid var(--rule);
+    font-size: 15px;
+  }
+  .note em { color: var(--ink-soft); font-style: normal; }
+  /* The wrong answer the question will dangle — flagged, never mistaken for a
+     fact while skimming. */
+  .decoy { color: var(--mark); }
+  .decoy strong, .decoy em { color: inherit; }
   ul, ol { margin: 0 0 18px; padding-left: 22px; }
   li { margin-bottom: 8px; }
   li > ul { margin-top: 8px; }
@@ -101,7 +179,7 @@
     margin: 0 0 20px;
     border: 1px solid var(--rule);
     border-radius: 10px;
-    background: var(--surface);
+    background: var(--bg);
     -webkit-overflow-scrolling: touch;
   }
   table { border-collapse: collapse; width: 100%; font-size: 15px; }
@@ -119,10 +197,16 @@
     font-weight: 700;
     white-space: nowrap;
   }
+  /* Comparison tables are read across a row, so the row needs to hold together
+     on its own. */
+  tbody tr:nth-child(odd) td { background: var(--surface); }
+  tbody td:first-child { font-weight: 600; }
   tbody tr:last-child td { border-bottom: none; }
   @media (max-width: 400px) {
     body { font-size: 16.5px; }
-    main { padding: 20px 16px 80px; }
+    main { padding: 20px 12px 80px; }
+    .topic { padding: 20px 16px 8px; }
+    .toc { padding: 16px 16px 6px; }
   }
 </style>
 </head>
@@ -130,22 +214,28 @@
 <main>
 <a class="back" href="./">&larr; Back to Builder Bench</a>
 <h1 id="niche-facts-platform-app-builder">Niche Facts — Platform App Builder</h1>
-<p>The details that actually separate answers. Written for skimming in short gaps, not for reading front to back. Each <strong>Decoy</strong> line is the wrong answer the question will dangle.</p>
-<p>Coverage: 15 of roughly 31 course topics, chosen by what the practice exam said you actually missed rather than by working through the course in order. See "Not yet covered" at the bottom.</p>
-<hr />
+<p class="lede">The details that actually separate answers. Written for skimming in short gaps, not for reading front to back. Each <strong>Decoy</strong> line is the wrong answer the question will dangle.</p>
+<p>Coverage: 16 of roughly 31 course topics, chosen by what the practice exam said you actually missed rather than by working through the course in order. See "Not yet covered" at the bottom.</p>
+<nav class="toc" id="contents" aria-label="Sections">
+<h2 class="toc-heading">Sections</h2>
+<ol><li><a href="#declarative-vs-programmatic-boundaries"><span class="toc-number">1</span><span class="toc-title">Declarative vs. programmatic boundaries</span></a></li><li><a href="#appexchange-and-packages"><span class="toc-number">2</span><span class="toc-title">AppExchange and packages</span></a></li><li><a href="#roll-up-summary-fields"><span class="toc-number">3</span><span class="toc-title">Roll-up summary fields</span></a></li><li><a href="#sharing-and-visibility"><span class="toc-number">4</span><span class="toc-title">Sharing and visibility</span></a></li><li><a href="#mobile-actions-and-layouts"><span class="toc-number">5</span><span class="toc-title">Mobile actions and layouts</span></a></li><li><a href="#chatter"><span class="toc-number">6</span><span class="toc-title">Chatter</span></a></li><li><a href="#leads-and-campaigns"><span class="toc-number">7</span><span class="toc-title">Leads and campaigns</span></a></li><li><a href="#automation-choosing-the-tool"><span class="toc-number">8</span><span class="toc-title">Automation: choosing the tool</span></a></li><li><a href="#relationships"><span class="toc-number">9</span><span class="toc-title">Relationships</span></a></li><li><a href="#validation-rules"><span class="toc-number">10</span><span class="toc-title">Validation rules</span></a></li><li><a href="#data-import-and-export"><span class="toc-number">11</span><span class="toc-title">Data import and export</span></a></li><li><a href="#sandboxes-and-the-application-lifecycle"><span class="toc-number">12</span><span class="toc-title">Sandboxes and the application lifecycle</span></a></li><li><a href="#change-sets"><span class="toc-number">13</span><span class="toc-title">Change sets</span></a></li><li><a href="#approval-processes"><span class="toc-number">14</span><span class="toc-title">Approval processes</span></a></li><li><a href="#user-interface"><span class="toc-number">15</span><span class="toc-title">User interface</span></a></li><li><a href="#not-yet-covered"><span class="toc-number">16</span><span class="toc-title">Not yet covered</span></a></li></ol>
+</nav>
+<section class="topic">
 <h2 id="declarative-vs-programmatic-boundaries">Declarative vs. programmatic boundaries</h2>
 <p><strong>Retirement dates are separate — and that's the question.</strong></p>
 <div class="table-scroll"><table><thead><tr><th>Tool</th><th>New creation blocked</th></tr></thead><tbody><tr><td>Workflow Rules</td><td>Winter '23</td></tr><tr><td>Process Builder</td><td>Summer '23</td></tr></tbody></table></div>
-<ul><li>Creation survives <strong>only in Developer Edition orgs, for use in managed packages</strong>.</li><li>Anything already in the org <strong>keeps running</strong> and can still be edited, activated, deactivated.</li><li><strong>Migrate to Flow</strong> (in Setup) converts workflow rules and processes. <strong>Not</strong> Apex triggers.</li><li>Decoy: "new processes can still be created in production." No.</li></ul>
+<ul><li>Creation survives <strong>only in Developer Edition orgs, for use in managed packages</strong>.</li><li>Anything already in the org <strong>keeps running</strong> and can still be edited, activated, deactivated.</li><li><strong>Migrate to Flow</strong> (in Setup) converts workflow rules and processes. <strong>Not</strong> Apex triggers.</li><li class="decoy">Decoy: "new processes can still be created in production." No.</li></ul>
 <p><strong>The one requirement with no declarative option at all:</strong></p>
 <ul><li><strong>Providing</strong> a custom web service → always Apex.</li><li><strong>Consuming</strong> one → Flow Builder for the simple case, Apex once the logic gets complex.</li></ul>
 <p>That asymmetry is worth memorizing as a pair; questions test the direction.</p>
 <p><strong>Other hard boundaries (Apex or custom components required):</strong></p>
-<ul><li>Inbound email processing beyond Email-to-Case settings → <strong>Apex email service handler</strong></li><li>Complex validation beyond validation rules → Apex</li><li>Reporting beyond the report builder → Visualforce / custom Lightning component + Apex</li><ul><li>Decoy: "create a new report type" or "share the folder." Those address <em>which data</em> and <em>which users</em>, not the builder's own limits.</li></ul></ul>
+<ul><li>Inbound email processing beyond Email-to-Case settings → <strong>Apex email service handler</strong></li><li>Complex validation beyond validation rules → Apex</li><li>Reporting beyond the report builder → Visualforce / custom Lightning component + Apex</li><ul><li class="decoy">Decoy: "create a new report type" or "share the folder." Those address <em>which data</em> and <em>which users</em>, not the builder's own limits.</li></ul></ul>
 <p><strong>Visualforce vs. custom Lightning components</strong> — the tiebreaker is visual design. Visualforce <strong>retains the Salesforce Classic look</strong>. So any requirement phrased as "must not look like Classic," "override a standard action in Lightning Experience," or "invoke custom client-side behavior in LEX" rules Visualforce out regardless of everything else.</p>
 <p><strong>Three ways to extend an org:</strong> Configure (Setup) · Buy (AppExchange) · Build (code). Decoy: "ask Salesforce Support to add the feature."</p>
 <p><strong>Cited advantages of declarative:</strong> faster to deliver, less maintenance, automatic upgrades each release, cheaper. It does <em>not</em> remove the need to test.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="appexchange-and-packages">AppExchange and packages</h2>
 <p><strong>Five solution types</strong> — the type is shown right under the name on the listing page: Salesforce App · Lightning Data · Bolt Solution · Flow · Component</p>
 <p><strong>Managed vs. unmanaged — the four-way contrast that gets tested:</strong></p>
@@ -153,7 +243,9 @@
 <ul><li>Managed = <strong>intellectual property protection</strong>. Subscribers can't view the Apex.</li><li>Unmanaged = distributing editable templates. <strong>Not upgradeable</strong> is the fact most often missed.</li><li>Packages install into <strong>sandbox or production</strong>.</li></ul>
 <p><strong>When to install rather than build:</strong> the app is already developed, proven and reviewed by Salesforce, and often ships with support and maintenance — which matters most when you lack resources to maintain a custom solution.</p>
 <p><strong>Lightning Data</strong> — validates CRM data against outside sources; aimed at <strong>Sales and Marketing</strong>.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="roll-up-summary-fields">Roll-up summary fields</h2>
 <p><strong>Only on the master side of a master-detail relationship.</strong> Recalculated whenever a referenced detail record is saved.</p>
 <p><strong>Limits:</strong></p>
@@ -167,11 +259,13 @@
 <ul><li>A roll-up summary field on the parent <strong>blocks converting master-detail → lookup.</strong> Delete the field first. Questions frame this as a relationship problem.</li><li>It <strong>cannot be the Error Location field</strong> on a validation rule — though it <em>can</em> be referenced in the rule's formula. The distinction is the whole question.</li></ul>
 <p><strong>Supported standard relationships — exactly three:</strong></p>
 <ul><li>Account ← Opportunity</li><li>Opportunity ← Opportunity Product</li><li>Campaign ← Campaign Member</li></ul>
-<p>Decoy: Contact ← Case. That's a lookup; not supported.</p>
+<p class="decoy">Decoy: Contact ← Case. That's a lookup; not supported.</p>
 <p><strong>Lookup relationship workarounds:</strong> Flow Builder · Apex trigger · batch/scheduled Apex · AppExchange tool (e.g. Roll-up Helper). A cross-object formula can pull a <em>parent</em> value down to a child, but cannot aggregate children up to a parent.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="sharing-and-visibility">Sharing and visibility</h2>
-<p><em>Diagnostic: this cluster accounted for several Fundamentals misses. Highest-priority section.</em></p>
+<p class="note"><em>Diagnostic: this cluster accounted for several Fundamentals misses. Highest-priority section.</em></p>
 <p><strong>Three layers, in order.</strong> Each opens up what the one before it allows:</p>
 <ol><li><strong>Object-level</strong> — profiles and permission sets. Read / Create / Edit / Delete.</li><li><strong>Record-level</strong> — organization-wide defaults, then role hierarchy, sharing rules, manual sharing.</li><li><strong>Field-level</strong> — field-level security. Visible / Read-Only.</li></ol>
 <p><strong>Organization-wide defaults set the baseline, and the baseline is the only thing that restricts.</strong> Everything layered on top can <em>only</em> grant more.</p>
@@ -189,9 +283,11 @@
 <p>Standard OWD options otherwise: Private · Public Read Only · Public Read/Write · Controlled by Parent.</p>
 <p><strong>Field-level security vs. page layout</strong> — removing a field from a layout hides it <em>in the interface only</em>. The value is still reachable through reports and the API. Real restriction requires FLS. Decoy: "remove it from the page layout."</p>
 <p><strong>Profiles vs. permission sets</strong> — reach for a <strong>permission set</strong> to give a subset of users something extra; don't clone a profile. Standard profiles can't be edited directly anyway. <strong>Restricted Profile Cloning</strong> (User Management Settings) stops a clone from carrying permissions the org doesn't actually have.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="mobile-actions-and-layouts">Mobile actions and layouts</h2>
-<p><em>Diagnostic: two Fundamentals misses here.</em></p>
+<p class="note"><em>Diagnostic: two Fundamentals misses here.</em></p>
 <p><strong>Global vs. object-specific — the distinction the exam actually tests:</strong></p>
 <div class="table-scroll"><table><thead><tr><th></th><th>Global</th><th>Object-specific</th></tr></thead><tbody><tr><td>Record relationship</td><td><strong>none</strong> automatic</td><td>auto-associated with the related record</td></tr><tr><td>Configured in</td><td>Setup → Global Actions</td><td>the object's <strong>page layout editor</strong></td></tr><tr><td>Found on</td><td>(+) in the header, home, Chatter tab and groups, object pages, custom Lightning app pages</td><td>that object's record detail page</td></tr><tr><td>Extra action types</td><td>custom canvas, <strong>Aura</strong> components</td><td><strong>Update a Record</strong>, <strong>flow</strong>, Aura <strong>and LWC</strong></td></tr></tbody></table></div>
 <p><strong>The fastest tiebreaker: only object-specific actions can <em>update</em> a record.</strong> A global action has no record context, so there's nothing for it to update. Same logic for flows and LWCs.</p>
@@ -200,9 +296,11 @@
 <p><strong>Action flavors worth telling apart:</strong></p>
 <ul><li><strong>Standard publisher actions</strong> — Post, File, Link. Arrive with Chatter; need <strong>feed tracking</strong> per object.</li><li><strong>Mobile smart actions</strong> — preconfigured bundle, <strong>one element</strong> in the layout editor, <strong>mobile app only</strong>.</li><li><strong>Productivity actions</strong> — predefined by Salesforce, attached to a limited set of objects.</li><li><strong>Dynamic actions</strong> — control action <em>visibility</em> conditionally.</li></ul>
 <p>Navigation menu lives in Setup → Salesforce Navigation. Users can reorder Lightning app items themselves from the phone. <strong>Smart Search Items</strong> puts objects into the Recent section.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="chatter">Chatter</h2>
-<p><em>Diagnostic: two Fundamentals misses here.</em></p>
+<p class="note"><em>Diagnostic: two Fundamentals misses here.</em></p>
 <p><strong>The numbers — pure recall, and they show up:</strong></p>
 <div class="table-scroll"><table><thead><tr><th>Fact</th><th>Value</th></tr></thead><tbody><tr><td>Feed tracking fields per object</td><td><strong>20</strong></td></tr><tr><td>Max Chatter file size</td><td><strong>2 GB</strong></td></tr><tr><td>Chatter Free per standard license</td><td><strong>5,000</strong></td></tr><tr><td>Chatter External per standard license</td><td><strong>500</strong></td></tr><tr><td>Custom objects a Chatter Only user may modify</td><td><strong>10</strong></td></tr></tbody></table></div>
 <p><strong>Group types are two independent questions.</strong> Privacy is public / private / unlisted. <strong>Broadcast is a separate flag</strong> that any of the three can carry — owner and managers post, members may only respond. A question about <em>who can post</em> is not a question about privacy.</p>
@@ -211,9 +309,11 @@
 <ul><li><strong>Chatter Free</strong> — feeds, people, groups, files. <strong>No Salesforce objects or data, and no tabs.</strong></li><li><strong>Chatter External</strong> — customers <em>outside the company email domain</em>, limited to groups they're invited to.</li><li><strong>Conversion runs one way:</strong> Chatter Free can be upgraded any time; a standard or Chatter Only license <strong>cannot</strong> be converted down to Chatter Free.</li></ul>
 <p><strong>Security:</strong> Chatter has no sharing model of its own. Post visibility follows <strong>record or group access</strong>. Decoy: an organization-wide default "for Chatter."</p>
 <p>Chatter is enabled by default; restrict it with <strong>profile-based rollout</strong>. Groups have list views and customizable page layouts, like objects. Flow can post to a <strong>user</strong>, a <strong>group</strong>, or the <strong>triggering record's</strong> feed, mentioning people by ID.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="leads-and-campaigns">Leads and campaigns</h2>
-<p><em>Diagnostic: flagged as a true blind spot rather than rust — no org experience to fall back on.</em></p>
+<p class="note"><em>Diagnostic: flagged as a true blind spot rather than rust — no org experience to fall back on.</em></p>
 <p><strong>The one fact everything else hangs off: conversion creates an account and a contact <em>always</em>, and an opportunity <em>optionally</em>.</strong> Existing accounts and contacts can be selected instead of new ones being created. Any answer that makes the opportunity mandatory is wrong.</p>
 <p><strong>Four features that get confused with each other — separate them by <em>when</em> they act:</strong></p>
 <div class="table-scroll"><table><thead><tr><th>Feature</th><th>Acts</th></tr></thead><tbody><tr><td><strong>Web-to-Lead</strong></td><td><em>creates</em> the lead, from HTML embedded on a website</td></tr><tr><td><strong>Auto-response rules</strong></td><td><em>replies</em> by email to a Web-to-Lead submission, chosen by record attributes</td></tr><tr><td><strong>Assignment rules</strong></td><td><em>routes</em> — applies criteria to sort, queue, or act on leads</td></tr><tr><td><strong>Queues</strong></td><td><em>holds</em> leads with no owner, so a team can share and distribute them</td></tr></tbody></table></div>
@@ -222,9 +322,11 @@
 <p>Also: <strong>Path</strong> (Lightning Experience) tracks lead lifecycle. Social profiles and LinkedIn can be linked to leads.</p>
 <p><strong>Campaigns:</strong></p>
 <ul><li><strong>Campaign members can be contacts, leads, or person accounts.</strong> Person accounts are the forgotten third. Opportunities are <em>never</em> campaign members.</li><li><strong>Campaign hierarchy is a lookup relationship</strong> between campaigns — a self-lookup, not master-detail. Useful counter-example to "grouping implies master-detail."</li></ul>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="automation-choosing-the-tool">Automation: choosing the tool</h2>
-<p><em>Diagnostic: four Business Logic misses were flow-related.</em></p>
+<p class="note"><em>Diagnostic: four Business Logic misses were flow-related.</em></p>
 <p><strong>Before-save vs. after-save is the highest-yield distinction in this domain:</strong></p>
 <div class="table-scroll"><table><thead><tr><th></th><th>Before-save</th><th>After-save</th></tr></thead><tbody><tr><td>Runs</td><td>before commit</td><td>after commit</td></tr><tr><td>Can update</td><td><strong>triggering record only</strong></td><td>triggering record, related records, other records</td></tr><tr><td>Interaction elements</td><td><strong>Custom Error Message only</strong></td><td>Custom Error Message, Action, Subflow</td></tr><tr><td>Scheduled / async paths</td><td><strong>no</strong></td><td>yes</td></tr><tr><td>Speed</td><td>faster</td><td>slower</td></tr><tr><td>Use for</td><td>field defaulting, calculated fields</td><td>cross-object updates, notifications, callouts, Apex</td></tr></tbody></table></div>
 <p>If a requirement mentions <em>anything</em> beyond the triggering record — a related record, an email, an Apex call, a scheduled path — it cannot be before-save. That one rule answers most of them.</p>
@@ -236,9 +338,11 @@
 <p><strong>Element gotchas:</strong></p>
 <ul><li><strong>Subflow is not supported in platform event-triggered flows.</strong></li><li><strong>Custom Error</strong> rolls back the record change, and works in <strong>both</strong> before-save and after-save.</li><li><strong>External Services</strong> call a REST API declaratively — needs an endpoint URL and a <strong>named credential</strong> registered in Setup; Salesforce then generates invocable actions.</li></ul>
 <p><strong>Flow Trigger Explorer</strong> shows every record-triggered flow on an object, split by trigger type and before/after save, including which have asynchronous paths, and manages version activation.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="relationships">Relationships</h2>
-<p><em>Diagnostic: two Data Modeling misses were junction/relationship questions.</em></p>
+<p class="note"><em>Diagnostic: two Data Modeling misses were junction/relationship questions.</em></p>
 <div class="table-scroll"><table><thead><tr><th></th><th>Master-detail</th><th>Lookup</th></tr></thead><tbody><tr><td>Relationship field</td><td><strong>required</strong></td><td>optional</td></tr><tr><td>Security / sharing</td><td>child <strong>inherits</strong> from parent</td><td>independent</td></tr><tr><td>Deletion</td><td><strong>cascades</strong> to children</td><td>independent</td></tr><tr><td>Roll-up summaries</td><td>yes</td><td><strong>no</strong></td></tr><tr><td>Max per object</td><td><strong>2</strong></td><td>many</td></tr><tr><td>Reparenting</td><td><strong>off by default</strong> ("Allow reparenting" to enable)</td><td>free</td></tr></tbody></table></div>
 <p><strong>Two master-detail constraints people forget:</strong></p>
 <ul><li><strong>Two per object, maximum.</strong></li><li><strong>A standard object cannot be on the detail side when a custom object is the master.</strong></li></ul>
@@ -249,27 +353,33 @@
 <p><strong>Self-relationships:</strong> a lookup can point an object at itself — Contact → 'Assistant'. <strong>The exception is User</strong>, which needs a <strong>hierarchical relationship</strong> instead. Hierarchical exists <em>only</em> on User. These two make ideal distractors for each other.</p>
 <p><strong>External objects</strong> support lookup, external lookup, and indirect lookup.</p>
 <p>Each lookup relationship also generates a <strong>standard report type</strong>, and lookup fields can be added to custom report types.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="validation-rules">Validation rules</h2>
-<p><em>Diagnostic: one Business Logic miss.</em></p>
+<p class="note"><em>Diagnostic: one Business Logic miss.</em></p>
 <p><strong>The rule fires when the formula is TRUE.</strong> The formula describes the <em>error condition</em>, not the valid state. Getting this backwards is the classic mistake.</p>
 <p><strong>Validation runs before workflow rules and processes.</strong> That ordering explains the gotcha below.</p>
 <p><strong>When they apply — memorize the exceptions, not the rule:</strong></p>
 <div class="table-scroll"><table><thead><tr><th>Situation</th><th>Validated?</th></tr></thead><tbody><tr><td>Normal create and edit</td><td>yes</td></tr><tr><td>Data import</td><td>yes</td></tr><tr><td>Web-to-Lead / Web-to-Case</td><td><strong>yes</strong></td></tr><tr><td>Field not on the page layout, or absent from the API call</td><td><strong>yes — still applies</strong></td></tr><tr><td><strong>Quick Create</strong></td><td><strong>no</strong></td></tr><tr><td><strong>Lead conversion</strong></td><td><strong>only if enabled in the org</strong></td></tr></tbody></table></div>
 <p><strong>The invalid-data gotcha:</strong> workflow field updates and process scheduled actions <strong>do not trigger validation rules</strong>, so they can leave a previously valid record holding values the rule would reject. Field-level security, hidden fields, and assignment rules can likewise cause records to fail validation in ways that look mysterious.</p>
 <p>Use cases worth recognizing: value ranges, <strong>REGEX</strong> for format enforcement, cross-object validation, field dependency, making a standard field effectively required.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="data-import-and-export">Data import and export</h2>
-<p><em>Diagnostic: two Data Modeling misses.</em></p>
+<p class="note"><em>Diagnostic: two Data Modeling misses.</em></p>
 <p><strong>50,000 records is the dividing line.</strong></p>
 <div class="table-scroll"><table><thead><tr><th></th><th>Data Import Wizard</th><th>Data Loader</th></tr></thead><tbody><tr><td>Volume</td><td><strong>under 50,000</strong></td><td>~50,000 up to <strong>150 million</strong></td></tr><tr><td>Objects</td><td>Accounts, Contacts, Leads, Solutions, Campaign Members, Person Accounts, custom</td><td><strong>all</strong> standard and custom</td></tr><tr><td>Operations</td><td>insert, update, upsert</td><td>insert, update, upsert, <strong>delete, hard delete, export, Export All</strong></td></tr><tr><td>Suppress workflow/processes</td><td><strong>yes, built-in option</strong></td><td>no — deactivate manually first</td></tr><tr><td>Prevent duplicates</td><td>yes, richer matching</td><td>ID / External ID matching only</td></tr><tr><td>Schedule</td><td><strong>no</strong></td><td><strong>yes, via the command line</strong></td></tr><tr><td>Install</td><td>native, in Setup</td><td>client app, must be downloaded</td></tr></tbody></table></div>
 <p><strong>Two ways a question steers you to Data Loader:</strong> volume over 50,000, <em>or</em> an object the wizard doesn't support. The wizard's list notably <strong>excludes Opportunities and Cases</strong>.</p>
 <p><strong>Export All</strong> is Data Loader only and includes <strong>archived records and the Recycle Bin</strong> — distinct from plain Export.</p>
 <p><strong>Relationships on import:</strong> load <strong>parents before children</strong>, and include a column of <strong>parent record IDs</strong> in the child file. Imported data still honors required fields and validation rules.</p>
 <p><strong>Data Loader defaults:</strong> blank owner → <strong>the user running the import</strong>; blank currency → <strong>the corporate currency</strong>. A value for an <em>unrestricted</em> picklist imports fine but is <strong>not</strong> added to the active picklist values.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="sandboxes-and-the-application-lifecycle">Sandboxes and the application lifecycle</h2>
-<p><em>Diagnostic: only 10% of the exam, but the app's thinnest coverage — worth an evening, not a week.</em></p>
+<p class="note"><em>Diagnostic: only 10% of the exam, but the app's thinnest coverage — worth an evening, not a week.</em></p>
 <div class="table-scroll"><table><thead><tr><th>Type</th><th>Data storage</th><th>Initial data</th><th>Refresh</th></tr></thead><tbody><tr><td>Developer</td><td>200 MB</td><td><strong>configuration only</strong></td><td><strong>1 day</strong></td></tr><tr><td>Developer Pro</td><td>1 GB</td><td><strong>configuration only</strong></td><td><strong>1 day</strong></td></tr><tr><td>Partial Copy</td><td><strong>5 GB</strong> (file storage = production)</td><td>subset defined by <strong>template</strong></td><td><strong>5 days</strong></td></tr><tr><td>Full Copy</td><td>same as production</td><td>all data (template can subset it)</td><td><strong>29 days</strong></td></tr></tbody></table></div>
 <p><strong>The two numbers that matter: 5 and 29.</strong> A scenario emphasizing frequent refreshes is pushing you away from Full Copy; one demanding production-identical scale is pushing you toward it.</p>
 <p><strong>Only Partial and Full contain records.</strong> Any requirement mentioning real data rules out both developer types immediately.</p>
@@ -279,9 +389,11 @@
 <p><strong>Edition:</strong> availability varies, and some types cost extra. <strong>Enterprise does not include Full Copy; Performance and Unlimited do.</strong></p>
 <p><strong>Lifecycle phases: plan → build → test → deploy.</strong></p>
 <ul><li><em>Simple:</em> change production directly, isolating work with profiles.</li><li><em>With a sandbox:</em> build and test in the sandbox, then move via change sets.</li><li><em>Advanced (parallel projects):</em> each project or developer gets a sandbox → consolidate in an <strong>integration sandbox</strong> → promote to a <strong>UAT sandbox</strong> for acceptance testing and training → production.</li></ul>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="change-sets">Change sets</h2>
-<p><em>Diagnostic: this was the very first question missed on the practice exam.</em></p>
+<p class="note"><em>Diagnostic: this was the very first question missed on the practice exam.</em></p>
 <p><strong>Change sets move metadata, never data.</strong> A list of contact records cannot travel in a change set — that needs Data Loader. This is the most-tested fact here and almost certainly what the "which cannot be transferred" question was after.</p>
 <p><strong>Related orgs only.</strong> They require a <strong>deployment connection</strong>, which exists between a production org and its sandboxes. Creating a sandbox establishes one automatically; the target org must separately allow inbound changes.</p>
 <p><strong>Outbound</strong> is created in the source org; it arrives as <strong>inbound</strong> in the target.</p>
@@ -294,9 +406,11 @@
 <ul><li><strong>Permission sets</strong> are components. <strong>Profiles</strong> are not — they ride along under <em>"Profile Settings for Included Components."</em></li><li><strong>Reports in private folders cannot be added.</strong> Move to a shared folder first.</li><li><strong>Flows and processes deploy as inactive by default</strong> — a classic "deployment succeeded but nothing happens." Deploying active brings a test-coverage requirement, and the minimum-percentage option exists <strong>only in production</strong>, since sandboxes always permit active versions.</li><li>An uploaded change set <strong>cannot be edited</strong> — status goes <strong>Closed</strong>. <strong>Clone</strong> it to make a variant. It can be uploaded to several connected orgs.</li><li><strong>Validate</strong> is a dry run in the target: success or failure, nothing committed.</li></ul>
 <p><strong>Troubleshooting cues:</strong></p>
 <ul><li><em>Insufficient Privileges</em> on Deployment Connections → the org likely has <strong>no sandboxes provisioned</strong></li><li>Deployment fails → a <strong>dependent component is missing</strong> from the target</li><li>Change set vanished → it <strong>expired</strong>, was <strong>deleted at source</strong>, or the <strong>source sandbox was deleted or refreshed</strong></li><li><strong>Cross-version validation error</strong> → source and target are on different Salesforce versions</li></ul>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="approval-processes">Approval processes</h2>
-<p><em>Added after a live miss in the app — this was the one gap the practice exam hadn't already flagged.</em></p>
+<p class="note"><em>Added after a live miss in the app — this was the one gap the practice exam hadn't already flagged.</em></p>
 <p><strong>Locking, which is where most questions live:</strong></p>
 <div class="table-scroll"><table><thead><tr><th>Event</th><th>Record state</th></tr></thead><tbody><tr><td>Initial submission</td><td><strong>locked</strong> (default)</td></tr><tr><td>Final approval / rejection</td><td>your choice — locked or unlocked</td></tr><tr><td><strong>Recall</strong></td><td><strong>unlocked</strong> (default)</td></tr></tbody></table></div>
 <p><strong>Locking is not absolute.</strong> While locked, the <strong>system administrator</strong>, the <strong>assigned approver</strong>, and anyone with <strong>Modify All Data</strong> can still edit. The Record Editability setting controls this.</p>
@@ -315,13 +429,34 @@
 <p>Entry vs. step criteria is the pairing most worth keeping straight: entry gates the process, step gates the step. Conditional routing — skipping director sign-off below a threshold — is built with step criteria plus the <em>not meeting criteria</em> action, not with entry criteria.</p>
 <p><strong>Approval History</strong> is its own related list, retaining comments and approval or rejection status across the original submission and every resubmission. Not the Setup Audit Trail, which tracks configuration changes.</p>
 <p>Approval processes live under <strong>Process Automation</strong> in Setup.</p>
-<hr />
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
+<h2 id="user-interface">User interface</h2>
+<p class="note"><em>Added after the question bank exam: roughly a quarter of its 20 questions were User Interface — far more than its 17% weight suggested, and the domain that had been deliberately skipped.</em></p>
+<p><strong>Compact layouts</strong> drive three surfaces: the <strong>record highlights panel</strong>, the <strong>lookup hover card</strong>, and the <strong>record landing page in the mobile app</strong>. Related lists are <em>not</em> one of them — that's the page layout.</p>
+<ul><li>A new compact layout does nothing until it is <strong>marked primary</strong>. The system default is read-only and cannot be deleted.</li><li><strong>Supports every field type except four: Text Area, Long Text Area, Rich Text Area, Multi-Select Picklist.</strong> All four are things that can't render in one compact line.</li></ul>
+<p><strong>Assignment models differ between page types — this is the pairing to keep straight:</strong></p>
+<div class="table-scroll"><table><thead><tr><th>Page type</th><th>Assigned by</th></tr></thead><tbody><tr><td>Lightning <strong>Home</strong> Page</td><td>app · <strong>app + profile</strong></td></tr><tr><td>Lightning <strong>Record</strong> Page</td><td>app · profile · <strong>record type</strong> · <strong>form factor</strong></td></tr></tbody></table></div>
+<p>Role, permission set, and queue are <em>never</em> assignment criteria for either. They are the standard wrong answers.</p>
+<p><strong>Record page layouts — three:</strong> Grouped View · Full View · <strong>Record View</strong> (Lightning console only). "Compact View" is not one; that word belongs to compact layouts.</p>
+<p>Record pages take three component kinds: <strong>standard, custom, third-party</strong>. The <strong>Accordion</strong> component is the vertical equivalent of Classic's Tabs. Templates advertise which <strong>form factors</strong> they support (desktop only, or desktop and phone).</p>
+<p><strong>Related list types — three:</strong> Basic List · Tile · <strong>Enhanced List</strong>. Only Enhanced List adds row count, column resizing and sorting, text wrapping, and mass actions.</p>
+<p><strong>Page layouts</strong> control fields, sections, buttons, links, actions, and related lists, and are associated with <strong>profiles</strong>. Visualforce pages can be embedded in them. <strong>Fields created in Schema Builder must be placed on the layout manually</strong> — the field wizard offers to do it, Schema Builder does not.</p>
+<p><strong>Mini page layouts</strong> apply to the Agent console mini view, hover details, and event overlays, and inherit record type and profile associations, related lists, fields, and field access from their parent layout. <strong>Hover details are Salesforce Classic only.</strong></p>
+<p><strong>List views:</strong></p>
+<ul><li>Users set their own default by <strong>pinning</strong> — no admin needed.</li><li><strong>Chart types are exactly three: vertical bar, horizontal bar, donut.</strong> Not line, not pie.</li><li>Fields in the <strong>Recently Viewed</strong> list are configured under <strong>Search Layouts</strong>, not in the list view itself. Unintuitive, therefore testable.</li><li>In Classic, list views on <strong>contacts, leads, users, and cases</strong> can build <strong>mass email</strong> recipient lists. Accounts cannot.</li><li>Lightning adds inline editing, Kanban and Split views, infinite scrolling, and list view charts.</li></ul>
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
+<section class="topic">
 <h2 id="not-yet-covered">Not yet covered</h2>
 <p>Every cluster the practice exam flagged is now covered. What remains was not implicated by a question you actually missed.</p>
-<div class="table-scroll"><table><thead><tr><th>Domain</th><th>Weight</th><th>Covered</th><th>Still open</th></tr></thead><tbody><tr><td>Business Logic</td><td>28%</td><td>4 of 6</td><td>formula fields · avoiding automation errors</td></tr><tr><td>Salesforce Fundamentals</td><td>23%</td><td>6 of 9</td><td>reports · report types · dashboards</td></tr><tr><td>Data Modeling</td><td>22%</td><td>3 of 7</td><td>record types · field data type change · schema builder</td></tr><tr><td><strong>User Interface</strong></td><td>17%</td><td><strong>0 of 5</strong></td><td>all of it — but you scored <strong>90%</strong> here</td></tr><tr><td>App Deployment</td><td>10%</td><td>3 of 4</td><td>deployment plan</td></tr></tbody></table></div>
+<div class="table-scroll"><table><thead><tr><th>Domain</th><th>Weight</th><th>Covered</th><th>Still open</th></tr></thead><tbody><tr><td>Business Logic</td><td>28%</td><td>4 of 6</td><td>formula fields · avoiding automation errors</td></tr><tr><td>Salesforce Fundamentals</td><td>23%</td><td>6 of 9</td><td>reports · report types · dashboards</td></tr><tr><td>Data Modeling</td><td>22%</td><td>3 of 7</td><td>record types · field data type change · schema builder</td></tr><tr><td>User Interface</td><td>17%</td><td>1 of 5</td><td>Lightning components (declarative + programmatic) · custom buttons and links</td></tr><tr><td>App Deployment</td><td>10%</td><td>3 of 4</td><td>deployment plan</td></tr></tbody></table></div>
 <p><strong>Read that User Interface row carefully.</strong> It is the largest untouched block and the second heaviest domain, and it is still the <em>right</em> thing to skip: at 90% accuracy it is worth only about 1.7 points of recoverable score, less than any other domain. Skipping it is a decision, not an oversight.</p>
 <p><strong>If more time appears, in order:</strong> approval processes and formula fields (Business Logic, 28%), then record types and field data type change considerations (Data Modeling, 22%). Both were adjacent to questions you missed without being the direct cause.</p>
 <p><strong>Better use of that time:</strong> take Practice Exam 2 and re-target from the result. This digest was built from one 60-question sample; a second one is worth more than another topic.</p>
+<a class="to-contents" href="#contents">&uarr; Contents</a>
+</section>
 </main>
 </body>
 </html>
