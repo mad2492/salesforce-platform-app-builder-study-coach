@@ -29,6 +29,23 @@ test("carries every section of the digest", () => {
   }
 });
 
+test("keeps a wrapped numbered item inside its list", () => {
+  // A numbered item that wraps onto a second source line used to end the list:
+  // the continuation became its own paragraph and the next item restarted at 1.
+  // Counting <li> would not catch it — the split list keeps every item. Count
+  // the lists themselves: one markdown block holding numbered lines is one <ol>.
+  const prose = body.replace(/<nav class="toc"[\s\S]*?<\/nav>/, "");
+  const renderedLists = [...prose.matchAll(/<ol>/g)].length;
+  const sourceLists = markdown
+    .split(/\n\s*\n/)
+    .filter((block) => /^\s*\d+\.\s+/m.test(block)).length;
+  assert.equal(
+    renderedLists,
+    sourceLists,
+    `each numbered list should render as one <ol>: ${sourceLists} in source, ${renderedLists} rendered`,
+  );
+});
+
 test("renders tables rather than dropping them", () => {
   const sourceTables = [...markdown.matchAll(/^\|[\s:|-]+\|$/gm)].length;
   const renderedTables = [...body.matchAll(/<table>/g)].length;
